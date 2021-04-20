@@ -4,4 +4,4 @@ A replacement for the somewhat aged [TechnicSolder](https://github.com/TechnicPa
 
 ### Installation
 
-See the [Wiki](https://git.vorax.org/henry/Reflow/Wiki) for details
+See the [Wiki](https://github.com/Zaprit/Reflow/wiki) for details
