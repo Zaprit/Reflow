@@ -17,6 +17,9 @@ GET     /public/*filepath                       Static.Serve("public")
 
 
 GET     /api                                    TechnicAPIController.ApiRoot
+GET     /api/mod                               TechnicAPIController.GetMods
+GET     /api/mod/:slug                               TechnicAPIController.GetMods
+GET     /api/mod/:slug/:version                               TechnicAPIController.GetMods
 # For rapid development uncomment the following to add new controller.action endpoints
 # without having to add them to the routes table.
-# *       /:controller/:action                    :controller.:action
+# *       /:controller/:action                     :controller.:action
