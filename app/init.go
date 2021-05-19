@@ -1,9 +1,9 @@
 package app
 
 import (
-	"github.com/revel/revel"
 	_ "github.com/revel/modules"
-
+	gorp "github.com/revel/modules/orm/gorp/app"
+	"github.com/revel/revel"
 )
 
 var (
@@ -32,6 +32,15 @@ func init() {
 		revel.ActionInvoker,           // Invoke the action.
 	}
 
+	revel.OnAppStart(func() {
+		// Register tables
+		gorp.Db.SetDbInit(func(dbGorp *gorp.DbGorp) error {
+			// Register tables
+			gorp.Db.Map.AddTableWithName(Mod{}, "mods")
+			gorp.Db.Map.AddTableWithName(ModVersion{}, "modversions")
+			return nil
+		})
+	}, 5)
 	// Register startup functions with OnAppStart
 	// revel.DevMode and revel.RunMode only work inside of OnAppStart. See Example Startup Script
 	// ( order dependent )
