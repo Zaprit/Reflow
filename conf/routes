@@ -3,24 +3,24 @@
 # This file defines all application routes (Higher priority routes first)
 #
 
-module:testrunner
+# module:testrunner
 # module:jobs
 
 
-GET     /                                       App.Index
+#GET     /                                       App.Index
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/*filepath                       Static.Serve("public")
+#GET     /public/*filepath                       Static.Serve("public")
 
 
 GET     /api                                    TechnicAPIController.ApiRoot
-GET     /api/mod                               TechnicAPIController.GetMods
-GET     /api/mod/:slug                               TechnicAPIController.GetMods
-GET     /api/mod/:slug/:version                               TechnicAPIController.GetMods
-POST    /api/create/                           TechnicAPIController.AddMod
+GET     /api/mod                                TechnicAPIController.GetMods
+GET     /api/mod/:slug                          TechnicAPIController.GetMods
+GET     /api/mod/:slug/:version                 TechnicAPIController.GetMods
+#POST    /api/create/                           TechnicAPIController.AddMod
 # For rapid development uncomment the following to add new controller.action endpoints
 # without having to add them to the routes table.
 # *       /:controller/:action                     :controller.:action
