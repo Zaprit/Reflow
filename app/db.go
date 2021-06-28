@@ -9,43 +9,43 @@ import (
 	"gorm.io/gorm"
 )
 
+// magic oogaly boogaly, I don't entirely know how this works, found it on the internet and it works
 var lock = &sync.Mutex{}
 
+//This could probably be improved upon but it works and I can not be bothered
 type GormInstance struct {
-	instance gorm.DB
+	Instance gorm.DB
 }
 
+//Internal to this class, is the underlying singleton instance of the DB
 var singleInstance *GormInstance
 
-func getDBInstance() *GormInstance {
+//Get the singleton DB instance
+func GetDBInstance() *GormInstance {
 	if singleInstance == nil {
 		lock.Lock()
 		defer lock.Unlock()
 		if singleInstance == nil {
-			fmt.Println("Creting GormInstance Now")
-			c, _ := config.ReadDefault("conf/reflow.cfg")
+			c, _ := config.ReadDefault("conf/reflow.conf")
 			var (
-				driver, _ = c.String("Database", "driver")
-				host, _   = c.String("Database", "hostname")
-				port, _   = c.Int("Database", "port")
-				dbname, _ = c.String("Database", "database")
-				user, _   = c.String("Database", "username")
-				pass, _   = c.String("Database", "password")
+				driver, _ = c.String("database", "driver")
+				host, _   = c.String("database", "hostname")
+				port, _   = c.Int("database", "port")
+				dbname, _ = c.String("database", "database")
+				user, _   = c.String("database", "username")
+				pass, _   = c.String("database", "password")
 			)
 			if driver == "postgres" {
-				dsn := fmt.Sprintf("host=%s user=%s password=$s dbname=$s port=$d sslmode=disable", host, user, pass, dbname, port)
+
+				dsn := "host=" + host + " user=" + user + " password=" + pass + " dbname=" + dbname + " port=" + fmt.Sprint(port) + " sslmode=disable"
 				pgdb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-				singleInstance = &GormInstance{instance: *pgdb}
+				singleInstance = &GormInstance{Instance: *pgdb}
 				if err != nil {
 					fmt.Printf("Error: %s\n", err)
 				}
 			}
 
-		} else {
-			fmt.Println("Single Instance already created-1")
 		}
-	} else {
-		fmt.Println("Single Instance already created-2")
 	}
 	return singleInstance
 }

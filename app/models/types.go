@@ -21,11 +21,17 @@ type Mod struct {
 }
 
 type Modversion struct {
-	ID       int    ` json:"id" `
-	MD5      string ` json:"md5" `
-	Filesize string ` json:"filesize" `
-	URL      string ` json:"url" `
+	ID        int
+	ModID     int ` json:"-" `
+	Version   string
+	MD5       string    ` json:"md5" `
+	CreatedAt time.Time ` json:"-" `
+	UpdatedAt time.Time ` json:"-" `
+	Filesize  string    ` json:"filesize" `
+	URL       string    ` json:"url" gorm:"-"`
+}
+type ModList struct {
+	Mods map[string]string `json:"mods" `
 }
 
-var Mods []Mod
 var DefaultInfo = APIInfo{Name: "Reflow", Version: "v0.1", Stream: "DEV"}

@@ -32,7 +32,7 @@ func init() {
 		revel.BeforeAfterFilter,       // Call the before and after filter functions
 		revel.ActionInvoker,           // Invoke the action.
 	}
-	getDBInstance().instance.AutoMigrate(models.Mod{})
+	GetDBInstance().Instance.AutoMigrate(models.Mod{})
 	// Register startup functions with OnAppStart
 	// revel.DevMode and revel.RunMode only work inside of OnAppStart. See Example Startup Script
 	// ( order dependent )

@@ -1,14 +1,14 @@
 package controllers
 
 import (
+	"reflow/app"
 	"reflow/app/models"
 
-	gorpController "github.com/revel/modules/orm/gorp/app/controllers"
 	"github.com/revel/revel"
 )
 
 type TechnicAPIController struct {
-	gorpController.Controller
+	App
 }
 
 func (c TechnicAPIController) ApiRoot() revel.Result {
@@ -17,15 +17,28 @@ func (c TechnicAPIController) ApiRoot() revel.Result {
 
 func (c TechnicAPIController) GetMods() revel.Result {
 	if c.Params.Route == nil {
-		return c.RenderText("you probably went to /api/mod")
+		var modmap = make(map[string]string)
+		var mods []models.Mod
+		app.GetDBInstance().Instance.Find(&mods)
+		for _, m := range mods {
+			modmap[m.Name] = m.DisplayName
+		}
+		return c.RenderJSON(models.ModList{Mods: modmap})
 	} else if c.Params.Route.Get("version") == "" {
-		sql, args, _ := c.Db.SqlStatementBuilder.Select("*").From("mods").Where("\"name\"='?'", c.Params.Route.Get("slug")).Limit(1).ToSql()
-		row := &models.Mod{}
-		print(sql)
-		return c.RenderJSON(c.Db.Map.SelectOne(row, sql, args...))
+
+		var mod models.Mod
+		var versions []models.Modversion
+		app.GetDBInstance().Instance.First(&mod, "name = ?", c.Params.Route.Get("slug"))
+		app.GetDBInstance().Instance.Where("mod_id = ?", mod.ID).Find(&versions)
+
+		for _, s := range versions {
+			mod.Versions = append(mod.Versions, s.Version)
+		}
+		return c.RenderJSON(mod)
 
 	} else {
-		return c.RenderText("you probably went to /api/mod/something/version where something is " + c.Params.Route.Get("slug") + " and version is " + c.Params.Route.Get("version"))
+		// specific mod version
+		return c.RenderText("NOT YET IMPLEMENTED")
 	}
 }
 

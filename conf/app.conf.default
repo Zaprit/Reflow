@@ -1,7 +1,5 @@
 #Reflow App config
-
 package.folders = conf, public, app/views
-
 app.name = reflow
 
 # A secret string which is passed to cryptographically sign the cookie to prevent
@@ -27,18 +25,15 @@ session.expires = 720h
 
 i18n.default_language = en
 
+# You shouldn't need to edit past this point
+
 # Development mode config
 [dev]
-
 mode.dev = true
-# Pretty Printing for JSON results
 results.pretty = true
-# Auto Rebuild
 watch = true
 watch.mode = eager
-# Module testing things
 module.testrunner = github.com/revel/modules/testrunner
-# Logging
 log.all.filter.module.app = stdout    # Log all loggers for the application to the stdout
 log.error.nfilter.module.app = stderr # Everything else that logs an error to stderr
 log.crit.output = stderr              # Everything that logs something as critical goes to this
@@ -47,7 +42,6 @@ log.request.output = stdout
 
 # Production settings
 [prod]
-
 mode.dev = false
 results.pretty = false
 watch = false
