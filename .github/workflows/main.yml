@@ -45,14 +45,14 @@ jobs:
       - name: Build Reflow
         run: |
           revel build -a . -t build/reflow-linux
-          zip -r build/reflow-linux.zip build/reflow-linux
+          zip -r build/reflow-linux-x64.zip build/reflow-linux
           
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
-          title: "Linux Nightly Build"
+          title: "Linux CI Build"
           files: |
             build/reflow-linux.zip
             
