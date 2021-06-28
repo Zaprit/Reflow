@@ -54,5 +54,5 @@ jobs:
           prerelease: true
           title: "Linux CI Build"
           files: |
-            build/reflow-linux.zip
+            build/reflow-linux-x64.zip
             
