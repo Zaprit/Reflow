@@ -27,20 +27,6 @@ session.expires = 720h
 
 i18n.default_language = en
 
-# Database config
-db.autoinit=true # default=true
-db.driver=postgres # mysql, postgres, sqlite3
-
-# The database connection properties individually or use the db.connection
-db.host=postgres://localhost 
-db.user=henry
-db.name=reflow
-db.password=
-db.import=github.com/lib/pq
-db.driver=pgx
-module.0.static=github.com/revel/modules/static
-module.1.gorp=github.com/revel/modules/orm/gorp
-
 # Development mode config
 [dev]
 
