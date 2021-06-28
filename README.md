@@ -1,6 +1,6 @@
-![Build](https://github.com/Zaprit/Reflow/actions/workflows/main.yml/badge.svg)
 # Reflow
 
+![Build](https://github.com/Zaprit/Reflow/actions/workflows/main.yml/badge.svg)
 A replacement for the somewhat aged [TechnicSolder](https://github.com/TechnicPack/TechnicSolder) server written in golang
 
 ## Status
