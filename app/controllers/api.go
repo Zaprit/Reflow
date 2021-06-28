@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"reflow/app"
+	"reflow/app/models"
 
 	gorpController "github.com/revel/modules/orm/gorp/app/controllers"
 	"github.com/revel/revel"
@@ -12,17 +12,20 @@ type TechnicAPIController struct {
 }
 
 func (c TechnicAPIController) ApiRoot() revel.Result {
-	return c.RenderJSON(app.DefaultInfo)
+	return c.RenderJSON(models.DefaultInfo)
 }
 
 func (c TechnicAPIController) GetMods() revel.Result {
 	if c.Params.Route == nil {
-		return c.RenderText("you probably went to /api/mods")
+		return c.RenderText("you probably went to /api/mod")
 	} else if c.Params.Route.Get("version") == "" {
-		return c.RenderJSON(c.Txn.SelectOne(&app.Mod{}, c.Db.SqlStatementBuilder.Select("*").From("mods").Where("name=?", c.Params.Route.Get("slug"))))
+		sql, args, _ := c.Db.SqlStatementBuilder.Select("*").From("mods").Where("\"name\"='?'", c.Params.Route.Get("slug")).Limit(1).ToSql()
+		row := &models.Mod{}
+		print(sql)
+		return c.RenderJSON(c.Db.Map.SelectOne(row, sql, args...))
 
 	} else {
-		return c.RenderText("you probably went to /api/mods/something/version where something is " + c.Params.Route.Get("slug") + " and version is " + c.Params.Route.Get("version"))
+		return c.RenderText("you probably went to /api/mod/something/version where something is " + c.Params.Route.Get("slug") + " and version is " + c.Params.Route.Get("version"))
 	}
 }
 
