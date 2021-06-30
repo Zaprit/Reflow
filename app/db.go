@@ -5,7 +5,6 @@ import (
 	"sync"
 
 	"github.com/revel/config"
-	"github.com/revel/revel"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -18,6 +17,8 @@ type GormInstance struct {
 	Instance gorm.DB
 }
 
+var ConfPaths []string
+
 //Internal to this class, is the underlying singleton instance of the DB
 var singleInstance *GormInstance
 
@@ -29,7 +30,7 @@ func GetDBInstance() *GormInstance {
 		if singleInstance == nil {
 			var c *config.Config
 			var err error
-			for _, confDir := range revel.ConfPaths {
+			for _, confDir := range ConfPaths {
 
 				c, err = config.ReadDefault(confDir + "/reflow.conf")
 				if err == nil {

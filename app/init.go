@@ -34,6 +34,7 @@ func init() {
 	}
 
 	revel.OnAppStart(func() {
+		ConfPaths = revel.ConfPaths
 		GetDBInstance().Instance.AutoMigrate(models.Mod{})
 	})
 	// Register startup functions with OnAppStart
