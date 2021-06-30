@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"reflow/app"
 	"reflow/app/models"
 
@@ -13,7 +12,6 @@ type TechnicAPIController struct {
 }
 
 func (c TechnicAPIController) ApiRoot() revel.Result {
-	fmt.Println(revel.ConfPaths)
 	return c.RenderJSON(models.DefaultInfo)
 }
 
@@ -21,6 +19,7 @@ func (c TechnicAPIController) GetMods() revel.Result {
 	if c.Params.Route == nil {
 		var modmap = make(map[string]string)
 		var mods []models.Mod
+
 		app.GetDBInstance().Instance.Find(&mods)
 		for _, m := range mods {
 			modmap[m.Name] = m.DisplayName
@@ -29,7 +28,7 @@ func (c TechnicAPIController) GetMods() revel.Result {
 	} else if c.Params.Route.Get("version") == "" {
 
 		var mod models.Mod
-		var versions []models.Modversion
+		var versions []models.Modversions
 		app.GetDBInstance().Instance.First(&mod, "name = ?", c.Params.Route.Get("slug"))
 		app.GetDBInstance().Instance.Where("mod_id = ?", mod.ID).Find(&versions)
 
