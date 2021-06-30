@@ -41,11 +41,11 @@ jobs:
           go get github.com/revel/revel
           go get github.com/revel/cmd/revel
 
-      - name: Build Reflow (Linux i386)
+      - name: Build Reflow (Linux x64)
         run: |
           revel build -a . -t reflow-linux-x64
           zip -r reflow-linux-x64.zip reflow-linux-x64
-      - name: Build Reflow (Linux x64)
+      - name: Build Reflow (Linux i386)
         run: |
           GOOS=linux GOARCH=386 revel build -a . -t reflow-linux-i386
           zip -r reflow-linux-i386.zip reflow-linux-i386
@@ -84,5 +84,5 @@ jobs:
           prerelease: true
           title: "Reflow CI build"
           files: |
-            reflow-linux-x64.zip
+            reflow-*-*.zip
             
