@@ -36,6 +36,10 @@ func GetDBInstance() *GormInstance {
 					break
 				}
 			}
+			if c == nil {
+				print("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
+				panic()
+			}
 			var (
 				driver, _ = c.String("database", "driver")
 				host, _   = c.String("database", "hostname")
