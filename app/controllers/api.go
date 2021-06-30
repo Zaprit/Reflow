@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"reflow/app"
 	"reflow/app/models"
 
@@ -12,6 +13,7 @@ type TechnicAPIController struct {
 }
 
 func (c TechnicAPIController) ApiRoot() revel.Result {
+	fmt.Println(revel.ConfPaths)
 	return c.RenderJSON(models.DefaultInfo)
 }
 

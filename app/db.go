@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/revel/config"
+	"github.com/revel/revel"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -26,7 +27,15 @@ func GetDBInstance() *GormInstance {
 		lock.Lock()
 		defer lock.Unlock()
 		if singleInstance == nil {
-			c, _ := config.ReadDefault("conf/reflow.conf")
+			var c *config.Config
+			var err error
+			for _, confDir := range revel.ConfPaths {
+
+				c, err = config.ReadDefault(confDir + "/reflow.conf")
+				if err == nil {
+					break
+				}
+			}
 			var (
 				driver, _ = c.String("database", "driver")
 				host, _   = c.String("database", "hostname")
@@ -35,6 +44,7 @@ func GetDBInstance() *GormInstance {
 				user, _   = c.String("database", "username")
 				pass, _   = c.String("database", "password")
 			)
+
 			if driver == "postgres" {
 
 				dsn := "host=" + host + " user=" + user + " password=" + pass + " dbname=" + dbname + " port=" + fmt.Sprint(port) + " sslmode=disable"
