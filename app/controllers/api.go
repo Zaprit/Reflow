@@ -28,7 +28,7 @@ func (c TechnicAPIController) GetMods() revel.Result {
 	} else if c.Params.Route.Get("version") == "" {
 
 		var mod models.Mod
-		var versions []models.Modversions
+		var versions []models.Modversion
 		app.GetDBInstance().Instance.First(&mod, "name = ?", c.Params.Route.Get("slug"))
 		app.GetDBInstance().Instance.Where("mod_id = ?", mod.ID).Find(&versions)
 
