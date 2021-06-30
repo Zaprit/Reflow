@@ -1,4 +1,4 @@
-[Database]
+[database]
 driver = postgres
 hostname = localhost
 port = 5432
