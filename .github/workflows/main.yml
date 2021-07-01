@@ -76,6 +76,8 @@ jobs:
         run: |
           GOOS=windows GOARCH=386 revel build -a . -m prod -t reflow-windows-i386
           zip -r reflow-windows-i386.zip reflow-windows-i386
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2.5.2
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
