@@ -7,14 +7,6 @@ import (
 	"github.com/revel/revel"
 )
 
-var (
-	// AppVersion revel app version (ldflags)
-	AppVersion string
-
-	// BuildTime revel app build-time (ldflags)
-	BuildTime string
-)
-
 func init() {
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
@@ -35,7 +27,11 @@ func init() {
 
 	revel.OnAppStart(func() {
 		ConfPaths = revel.ConfPaths
-		GetDBInstance().Instance.AutoMigrate(models.Mod{})
+		err := GetDBInstance().Instance.AutoMigrate(models.Mod{})
+		if err != nil {
+			print(err)
+			panic(err)
+		}
 	})
 	// Register startup functions with OnAppStart
 	// revel.DevMode and revel.RunMode only work inside of OnAppStart. See Example Startup Script
