@@ -1,4 +1,4 @@
-module reflow
+module github.com/Zaprit/Reflow
 
 go 1.16
 

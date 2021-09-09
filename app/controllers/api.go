@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"reflow/app"
-	"reflow/app/models"
+	"github.com/Zaprit/Reflow/app"
+	"github.com/Zaprit/Reflow/app/models"
 
 	"github.com/revel/revel"
 )
@@ -38,12 +38,14 @@ func (c TechnicAPIController) GetMods() revel.Result {
 		return c.RenderJSON(mod)
 
 	} else {
-		// specific mod version
+		// specific mod version TODO: Implement this
+
 		return c.RenderText("NOT YET IMPLEMENTED")
 	}
 }
 
 func (c TechnicAPIController) AddMod() revel.Result {
+	// TODO: port the old gorp stuff to gorm
 	//c.DB.Create(app.Mod{Name: c.Params.Form.Get("name"), DisplayName: c.Params.Form.Get("displayname"), Author: c.Params.Form.Get("author"), Description: c.Params.Form.Get("description"), Link: c.Params.Form.Get("link")})
 	return c.Render()
 }

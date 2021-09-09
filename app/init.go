@@ -1,7 +1,7 @@
 package app
 
 import (
-	"reflow/app/models"
+	"github.com/Zaprit/Reflow/app/models"
 
 	_ "github.com/revel/modules"
 	"github.com/revel/revel"
