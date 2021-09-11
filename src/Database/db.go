@@ -1,7 +1,8 @@
-package app
+package Database
 
 import (
 	"fmt"
+	"github.com/Zaprit/Reflow/src/Config"
 	"sync"
 
 	"github.com/revel/config"
@@ -17,7 +18,7 @@ type GormInstance struct {
 	Instance gorm.DB
 }
 
-var ConfPaths []string
+
 
 //Internal to this class, is the underlying singleton instance of the DB
 var singleInstance *GormInstance
@@ -30,15 +31,15 @@ func GetDBInstance() *GormInstance {
 		if singleInstance == nil {
 			var c *config.Config
 			var err error
-			for _, confDir := range ConfPaths {
+			for _, confDir := range Config.ConfPaths {
 
-				c, err = config.ReadDefault(confDir + "/reflow.conf")
+				c, err = config.ReadDefault(confDir + "/db.conf")
 				if err == nil {
 					break
 				}
 			}
 			if c == nil {
-				print("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
+				panic("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
 			}
 			var (
 				driver, _ = c.String("database", "driver")

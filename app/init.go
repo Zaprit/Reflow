@@ -1,7 +1,8 @@
 package app
 
 import (
-	"github.com/Zaprit/Reflow/app/models"
+	"github.com/Zaprit/Reflow/src/Database"
+	"github.com/Zaprit/Reflow/src/Models"
 
 	_ "github.com/revel/modules"
 	"github.com/revel/revel"
@@ -26,8 +27,8 @@ func init() {
 	}
 
 	revel.OnAppStart(func() {
-		ConfPaths = revel.ConfPaths
-		err := GetDBInstance().Instance.AutoMigrate(models.Mod{})
+		Database.ConfPaths = revel.ConfPaths
+		err := Database.GetDBInstance().Instance.AutoMigrate(Models.Mod{})
 		if err != nil {
 			print(err)
 			panic(err)
