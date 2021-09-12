@@ -36,9 +36,6 @@ jobs:
           token: ${{ github.token }} # optional, default is ${{ github.token }}
   
       # Get the dependencies
-      - name: Get Dependencies
-        run: |
-          go get ./...
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v2.5.2
       - name: Build Reflow (Linux x64)
