@@ -35,11 +35,10 @@ jobs:
           # Used to pull node distributions from go-versions.  Since there's a default, this is typically not supplied by the user.
           token: ${{ github.token }} # optional, default is ${{ github.token }}
   
-      # Get the revel framework
-      - name: Get Revel
+      # Get the dependencies
+      - name: Get Dependencies
         run: |
-          go get github.com/revel/revel
-          go get github.com/revel/cmd/revel
+          go get 
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v2.5.2
       - name: Build Reflow (Linux x64)

@@ -2,10 +2,11 @@ package Database
 
 import (
 	"fmt"
-	"github.com/Zaprit/Reflow/src/Config"
+	"github.com/Zaprit/Reflow/Config"
+	"strconv"
 	"sync"
 
-	"github.com/revel/config"
+	"github.com/alyu/configparser"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,25 +30,21 @@ func GetDBInstance() *GormInstance {
 		lock.Lock()
 		defer lock.Unlock()
 		if singleInstance == nil {
-			var c *config.Config
-			var err error
-			for _, confDir := range Config.ConfPaths {
-
-				c, err = config.ReadDefault(confDir + "/db.conf")
-				if err == nil {
-					break
-				}
-			}
-			if c == nil {
+			config, err := configparser.Read(Config.ConfigFile)
+			if err != nil {
 				panic("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
 			}
+			section, err := config.Section("database")
+			if err != nil {
+				panic("Missing database config section in reflow.conf")
+			}
 			var (
-				driver, _ = c.String("database", "driver")
-				host, _   = c.String("database", "hostname")
-				port, _   = c.Int("database", "port")
-				dbname, _ = c.String("database", "database")
-				user, _   = c.String("database", "username")
-				pass, _   = c.String("database", "password")
+				driver = section.ValueOf("driver")
+				host   = section.ValueOf("hostname")
+				port, _   = strconv.ParseInt(section.ValueOf("port"), 10, 16)
+				dbname = section.ValueOf("database")
+				user   = section.ValueOf("username")
+				pass   = section.ValueOf("password")
 			)
 
 			if driver == "postgres" {

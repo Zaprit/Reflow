@@ -2,8 +2,8 @@ package TechnicAPI
 
 import (
 	"encoding/json"
-	"github.com/Zaprit/Reflow/src/Database"
-	"github.com/Zaprit/Reflow/src/Models"
+	"github.com/Zaprit/Reflow/Database"
+	"github.com/Zaprit/Reflow/Models"
 	"net/http"
 )
 
