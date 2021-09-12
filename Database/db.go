@@ -14,7 +14,7 @@ import (
 // magic oogaly boogaly, I don't entirely know how this works, found it on the internet and it works
 var lock = &sync.Mutex{}
 
-//This could probably be improved upon but it works and I can not be bothered
+// GormInstance This could probably be improved upon but it works and I can not be bothered
 type GormInstance struct {
 	Instance gorm.DB
 }
@@ -22,13 +22,13 @@ type GormInstance struct {
 //Internal to this class, is the underlying singleton instance of the DB
 var singleInstance *GormInstance
 
-//Get the singleton DB instance
+// GetDBInstance Get the singleton DB instance
 func GetDBInstance() *GormInstance {
 	if singleInstance == nil {
 		lock.Lock()
 		defer lock.Unlock()
 		if singleInstance == nil {
-			config, err := configparser.Read(Config.ConfigFile)
+			config, err := configparser.Read(Config.ConfigurationFile)
 			if err != nil {
 				panic("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
 			}

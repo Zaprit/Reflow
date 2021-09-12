@@ -2,31 +2,39 @@ package TechnicAPI
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/Zaprit/Reflow/Database"
 	"github.com/Zaprit/Reflow/Models"
 	"net/http"
 )
 
 
-func ApiRoot(w http.ResponseWriter, req *http.Request) {
+func ApiRoot(w http.ResponseWriter, _ *http.Request) {
 	out, _ := json.Marshal(Models.DefaultInfo)
-	w.Write(out)
+	_, err := w.Write(out)
+	if err != nil {
+		fmt.Printf("Error In /ApiRoot: %s", err.Error())
+	}
 }
 
-func GetMods(w http.ResponseWriter, req *http.Request){
-		var modmap = make(map[string]string)
-		var mods []Models.Mod
+func GetMods(w http.ResponseWriter, _ *http.Request){
+	var modMap = make(map[string]string)
+	var mods []Models.Mod
 
-		Database.GetDBInstance().Instance.Find(&mods)
-		for _, m := range mods {
-			modmap[m.Name] = m.DisplayName
-		}
-		out, _ := json.Marshal(Models.ModList{modmap})
-		w.Write(out)
+	Database.GetDBInstance().Instance.Find(&mods)
+	for _, m := range mods {
+		modMap[m.Name] = m.DisplayName
+	}
+	out, _ := json.Marshal(Models.ModList{Mods: modMap})
+	_, err := w.Write(out)
+	if err != nil {
+		fmt.Printf("Error in GetMods: %s", err.Error())
+	}
+	// TODO: Rewrite this into separate functions
 	//else if c.Params.Route.Get("version") == "" {
 	//
 	//	var mod Models.Mod
-	//	var versions []Models.Modversion
+	//	var versions []Models.ModVersion
 	//	Database.GetDBInstance().Instance.First(&mod, "name = ?", c.Params.Route.Get("slug"))
 	//	Database.GetDBInstance().Instance.Where("mod_id = ?", mod.ID).Find(&versions)
 	//

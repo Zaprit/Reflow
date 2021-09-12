@@ -40,7 +40,7 @@ func main() {
 	APIName, _ := json.Marshal(Models.DefaultInfo)
 	fmt.Printf("Reflow %s API: \"%s\"\n", Models.DefaultInfo.Version, APIName)
 
-	info, err := os.Stat("conf")
+	_, err := os.Stat("conf")
 	if err != nil {
 		if os.IsNotExist(err) {
 			err = os.Mkdir("conf", 0755)
@@ -48,7 +48,7 @@ func main() {
 				panic(err)
 			}
 		}
-		info, err = os.Stat("conf")
+		info, _ := os.Stat("conf")
 
 		if !info.IsDir() {
 			err = os.Remove("conf")
