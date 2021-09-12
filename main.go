@@ -9,10 +9,15 @@ import (
 	"github.com/gorilla/mux"
 	"io/fs"
 	"net/http"
+	"os"
+	"path/filepath"
 )
 
 //go:embed web/*
 var static embed.FS
+
+//go:embed conf/reflow.conf.sample
+var defaultConfig string
 
 func notFound(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(404)
@@ -33,18 +38,58 @@ func notFound(w http.ResponseWriter, _ *http.Request) {
 
 func main() {
 	APIName, _ := json.Marshal(Models.DefaultInfo)
-	fmt.Printf("Reflow %s API: \"%s\"", Models.DefaultInfo.Version, APIName)
-	r := mux.NewRouter()
+	fmt.Printf("Reflow %s API: \"%s\"\n", Models.DefaultInfo.Version, APIName)
 
+	info, err := os.Stat("conf")
+	if err != nil {
+		if os.IsNotExist(err) {
+			err = os.Mkdir("conf", 0755)
+			if err != nil {
+				panic(err)
+			}
+		}
+		info, err = os.Stat("conf")
+
+		if !info.IsDir() {
+			err = os.Remove("conf")
+			if err != nil {
+				panic(err.Error())
+			}
+
+			err = os.Mkdir("conf", 0755)
+			if err != nil {
+				panic(err.Error())
+			}
+		}
+		conf, err := os.Create(filepath.FromSlash("./conf/reflow.conf"))
+		if err != nil {
+			panic(err.Error())
+		}
+		_, err = conf.WriteString(defaultConfig)
+		if err != nil {
+			panic(err.Error())
+		}
+		err = conf.Sync()
+		if err != nil {
+			panic(err.Error())
+		}
+		err = conf.Close()
+		if err != nil {
+			panic(err.Error())
+		}
+
+	}
+
+	r := mux.NewRouter()
 	// Static content from web folder
 	contentStatic, _ := fs.Sub(static, "web")
 
-	r.PathPrefix("/").Handler(http.FileServer(http.FS(contentStatic)))
+	r.PathPrefix("/static").Handler(http.FileServer(http.FS(contentStatic)))
 	r.HandleFunc("/api", TechnicAPI.ApiRoot)
 	r.HandleFunc("/api/mod", TechnicAPI.GetMods)
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 	http.Handle("/", r)
-	err := http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		fmt.Println("ERROR: Something went wrong while setting up server")
 		panic(err)

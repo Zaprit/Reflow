@@ -29,7 +29,7 @@ jobs:
         uses: actions/setup-go@v2.1.3
         with:
           # The Go version to download (if necessary) and use. Supports semver spec and ranges.
-          go-version: 1.16.5 # optional
+          go-version: 1.17.1 # optional
           # Whether to download only stable versions
           stable: true # optional, default is true
           # Used to pull node distributions from go-versions.  Since there's a default, this is typically not supplied by the user.
@@ -38,45 +38,48 @@ jobs:
       # Get the dependencies
       - name: Get Dependencies
         run: |
-          go get 
+          go get ./...
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v2.5.2
       - name: Build Reflow (Linux x64)
         run: |
-          revel build -a . -m prod -t reflow-linux-x64
-          zip -r reflow-linux-x64.zip reflow-linux-x64
+          go build -o reflow-linux-x64
+          zip reflow-linux-x64.zip reflow-linux-x64
       - name: Build Reflow (Linux i386)
         run: |
-          GOOS=linux GOARCH=386 revel build -a . -m prod -t reflow-linux-i386
-          zip -r reflow-linux-i386.zip reflow-linux-i386
+          GOOS=linux GOARCH=386 go build -o reflow-linux-i386
+          zip reflow-linux-i386.zip reflow-linux-i386
       
       - name: Build Reflow (Linux ARM64)
         run: |
-          GOOS=linux GOARCH=arm64 revel build -a . -m prod -t reflow-linux-arm64
-          zip -r reflow-linux-arm64.zip reflow-linux-arm64
+          GOOS=linux GOARCH=arm64 go build -o reflow-linux-arm64
+          zip reflow-linux-arm64.zip reflow-linux-arm64
       - name: Build Reflow (Linux ARM)
         run: |
-          GOOS=linux GOARCH=arm revel build -a . -m prod -t reflow-linux-arm
-          zip -r reflow-linux-arm.zip reflow-linux-arm
+          GOOS=linux GOARCH=arm go build -o reflow-linux-arm
+          zip reflow-linux-arm.zip reflow-linux-arm
           
       - name: Build Reflow (Mac x64)
         run: |
-          GOOS=darwin GOARCH=amd64 revel build -a . -m prod -t reflow-macos-x64
-          zip -r reflow-macos-x64.zip reflow-macos-x64
+          GOOS=darwin GOARCH=amd64 go build -o reflow-macos-x64
+          zip reflow-macos-x64.zip reflow-macos-x64
       - name: Build Reflow (Mac ARM64)
         run: |
-          GOOS=darwin GOARCH=arm64 revel build -a . -m prod -t reflow-macos-arm64
-          zip -r reflow-macos-arm64.zip reflow-macos-arm64
+          GOOS=darwin GOARCH=arm64 go build -o reflow-macos-arm64
+          zip reflow-macos-arm64.zip reflow-macos-arm64
           
       - name: Build Reflow (Windows x64)
         run: |
-          GOOS=windows GOARCH=amd64 revel build -a . -m prod -t reflow-windows-x64
-          zip -r reflow-windows-x64.zip reflow-windows-x64
+          GOOS=windows GOARCH=amd64 go build -o reflow-windows-x64
+          zip reflow-windows-x64.zip reflow-windows-x64
       - name: Build Reflow (Windows i386)
         run: |
-          GOOS=windows GOARCH=386 revel build -a . -m prod -t reflow-windows-i386
-          zip -r reflow-windows-i386.zip reflow-windows-i386
-
+          GOOS=windows GOARCH=386 go build -o reflow-windows-i386
+          zip reflow-windows-i386.zip reflow-windows-i386
+      - name: Build Reflow (Windows x64)
+        run: |
+          GOOS=windows GOARCH=arm64 go build -o reflow-windows-arm64
+          zip reflow-windows-arm64.zip reflow-windows-arm64
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"

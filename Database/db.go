@@ -19,8 +19,6 @@ type GormInstance struct {
 	Instance gorm.DB
 }
 
-
-
 //Internal to this class, is the underlying singleton instance of the DB
 var singleInstance *GormInstance
 
