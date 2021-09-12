@@ -1,0 +1,101 @@
+---
+linters-settings:
+  dupl:
+    threshold: 100
+  funlen:
+    lines: 100
+    statements: 50
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+  gocyclo:
+    min-complexity: 15
+  gofmt:
+    simplify: true
+  goimports:
+    local-prefixes: github.com/Zaprit/Reflow
+  golint:
+    min-confidence: 0.8
+  govet:
+    enable-all: true
+    check-shadowing: true
+    disable:
+      # While struct sizes could be smaller if fields aligned properly, that also leads
+      # to possibly non-intuitive layout of struct fields (harder to read). Disable
+      # `fieldalignment` check here until we evaluate if it is worthwhile.
+      - fieldalignment
+      # https://github.com/golangci/golangci-lint/issues/1973
+      - sigchanyzer
+  lll:
+    line-length: 140
+  misspell:
+    locale: US
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - deadcode
+    - depguard
+    - dogsled
+    - dupl
+    - errcheck
+    - funlen
+    - gochecknoglobals
+    - gochecknoinits
+    - gocognit
+    - goconst
+    - gocritic
+    - gocyclo
+    - godox
+    - gofmt
+    - goimports
+    - golint
+    - gomnd
+    - goprintffuncname
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - prealloc
+    - rowserrcheck
+    - staticcheck
+    - structcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - varcheck
+    - whitespace
+    - wsl
+
+run:
+  timeout: 5m
+  tests: true
+  skip-dirs:
+    - .github
+    - build
+    - web
+
+issues:
+  exclude-rules:
+    - linters:
+        - funlen
+      # Disable 'funlen' linter for test functions.
+      # It's common for table-driven tests to be more than 60 characters long
+      source: "^func Test"
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-use-default: false

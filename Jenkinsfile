@@ -6,6 +6,7 @@ node {
     // Export environment variables pointing to the directory where Go was installed
     withEnv(["GOROOT=${root}", "PATH+GO=${root}/bin"]) {
         sh 'go get ./...'
+        sh 'rm -rf build'
         sh 'mkdir build'
         sh 'go build -o build/reflow-linux-amd64 .'
         sh 'GOOS=darwin GOARCH=arm64 go build -o build/reflow-darwin-arm64 .'
