@@ -11,10 +11,9 @@ import (
 	"gorm.io/gorm"
 )
 
-// magic oogaly boogaly, I don't entirely know how this works, found it on the internet and it works
 var lock = &sync.Mutex{}
 
-// GormInstance This could probably be improved upon but it works and I can not be bothered
+// GormInstance This could probably be improved upon, but it works. and I can not be bothered
 type GormInstance struct {
 	Instance gorm.DB
 }
@@ -46,10 +45,10 @@ func GetDBInstance() *GormInstance {
 			)
 
 			if driver == "postgres" {
-
+				//go:lint
 				dsn := "host=" + host + " user=" + user + " password=" + pass + " dbname=" + dbname + " port=" + fmt.Sprint(port) + " sslmode=disable"
-				pgdb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-				singleInstance = &GormInstance{Instance: *pgdb}
+				postgresDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+				singleInstance = &GormInstance{Instance: *postgresDB}
 				if err != nil {
 					fmt.Printf("Error: %s\n", err)
 				}
