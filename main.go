@@ -4,13 +4,14 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"github.com/Zaprit/Reflow/models"
-	"github.com/Zaprit/Reflow/technicapi"
 	"github.com/gorilla/mux"
 	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/Zaprit/Reflow/models"
+	"github.com/Zaprit/Reflow/technicapi"
 )
 
 //go:embed web/*
@@ -20,11 +21,16 @@ var static embed.FS
 var defaultConfig string
 
 func notFound(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(404)
+
 	file, err := static.ReadFile("web/404.html")
+
+	w.WriteHeader(404)
+
 	if err != nil {
+
 		fmt.Println("Error, 404 page not found")
 		_, err2 := w.Write([]byte("404 not found"))
+
 		if err2 != nil {
 			panic("failed making a 404 page, somehow both the 404 page from static and the 404 page i just made with text both failed?!?!?!")
 		}
@@ -85,7 +91,7 @@ func main() {
 	contentStatic, _ := fs.Sub(static, "web")
 
 	r.PathPrefix("/static").Handler(http.FileServer(http.FS(contentStatic)))
-	r.HandleFunc("/api", technicapi.ApiRoot)
+	r.HandleFunc("/api", technicapi.APIRoot)
 	r.HandleFunc("/api/mod", technicapi.GetMods)
 	r.HandleFunc("/api/mod/{slug}", technicapi.GetMod)
 	//r.HandleFunc("/api/mod/{slug}/{version}", technicapi.GetModVersion)

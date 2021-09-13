@@ -1,3 +1,4 @@
+// Package config is the package that handles application config
 package config
 
 import "path/filepath"

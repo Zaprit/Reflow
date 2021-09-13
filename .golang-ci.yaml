@@ -49,7 +49,6 @@ linters:
     - dupl
     - errcheck
     - funlen
-    - gochecknoglobals
     - gochecknoinits
     - gocognit
     - goconst
@@ -59,7 +58,6 @@ linters:
     - gofmt
     - goimports
     - golint
-    - gomnd
     - goprintffuncname
     - gosec
     - gosimple
