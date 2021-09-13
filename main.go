@@ -19,16 +19,15 @@ var static embed.FS
 
 //go:embed conf/reflow.conf.sample
 var defaultConfig string
-
 func notFound(w http.ResponseWriter, _ *http.Request) {
 
 	file, err := static.ReadFile("web/404.html")
 
 	w.WriteHeader(404)
-
 	if err != nil {
 
 		fmt.Println("Error, 404 page not found")
+
 		_, err2 := w.Write([]byte("404 not found"))
 
 		if err2 != nil {
@@ -37,6 +36,7 @@ func notFound(w http.ResponseWriter, _ *http.Request) {
 		return
 	}
 	_, err = w.Write(file)
+
 	if err != nil {
 		panic("failed to display static 404 page")
 	}

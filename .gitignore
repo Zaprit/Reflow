@@ -1,8 +1,5 @@
 test-results/
 tmp/
-routes/
 build
-target
-none
 conf/reflow.conf
 web/node_modules
