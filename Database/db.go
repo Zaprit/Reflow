@@ -35,12 +35,12 @@ func GetDBInstance() *GormInstance {
 				panic("Missing database config section in reflow.conf")
 			}
 			var (
-				driver = section.ValueOf("driver")
-				host   = section.ValueOf("hostname")
-				port, _   = strconv.ParseInt(section.ValueOf("port"), 10, 16)
-				dbname = section.ValueOf("database")
-				user   = section.ValueOf("username")
-				pass   = section.ValueOf("password")
+				driver  = section.ValueOf("driver")
+				host    = section.ValueOf("hostname")
+				port, _ = strconv.ParseInt(section.ValueOf("port"), 10, 16)
+				dbname  = section.ValueOf("database")
+				user    = section.ValueOf("username")
+				pass    = section.ValueOf("password")
 			)
 
 			if driver == "postgres" {
@@ -57,4 +57,3 @@ func GetDBInstance() *GormInstance {
 	}
 	return singleInstance
 }
-

@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-
 func ApiRoot(w http.ResponseWriter, _ *http.Request) {
 	out, _ := json.Marshal(Models.DefaultInfo)
 	_, err := w.Write(out)
@@ -33,7 +32,7 @@ func GetMods(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func GetMod(w http.ResponseWriter, req *http.Request){
+func GetMod(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	var mod Models.Mod
 	var versions []Models.ModVersion
@@ -53,6 +52,7 @@ func GetMod(w http.ResponseWriter, req *http.Request){
 		}
 	}
 }
+
 //func GetModVersion(w http.ResponseWriter, req *http.Request){
 //
 //
