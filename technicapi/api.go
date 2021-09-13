@@ -1,16 +1,16 @@
-package TechnicAPI
+package technicapi
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Zaprit/Reflow/Database"
-	"github.com/Zaprit/Reflow/Models"
+	"github.com/Zaprit/Reflow/database"
+	"github.com/Zaprit/Reflow/models"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 func ApiRoot(w http.ResponseWriter, _ *http.Request) {
-	out, _ := json.Marshal(Models.DefaultInfo)
+	out, _ := json.Marshal(models.DefaultInfo)
 	_, err := w.Write(out)
 	if err != nil {
 		fmt.Printf("Error In /ApiRoot: %s", err.Error())
@@ -19,13 +19,13 @@ func ApiRoot(w http.ResponseWriter, _ *http.Request) {
 
 func GetMods(w http.ResponseWriter, _ *http.Request) {
 	var modMap = make(map[string]string)
-	var mods []Models.Mod
+	var mods []models.Mod
 
-	Database.GetDBInstance().Instance.Find(&mods)
+	database.GetDBInstance().Instance.Find(&mods)
 	for _, m := range mods {
 		modMap[m.Name] = m.DisplayName
 	}
-	out, _ := json.Marshal(Models.ModList{Mods: modMap})
+	out, _ := json.Marshal(models.ModList{Mods: modMap})
 	_, err := w.Write(out)
 	if err != nil {
 		fmt.Printf("Error in GetMods: %s", err.Error())
@@ -34,10 +34,10 @@ func GetMods(w http.ResponseWriter, _ *http.Request) {
 
 func GetMod(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
-	var mod Models.Mod
-	var versions []Models.ModVersion
-	Database.GetDBInstance().Instance.First(&mod, "name = ?", vars["slug"])
-	Database.GetDBInstance().Instance.Table("modversions").Where("mod_id = ?", mod.ID).Find(&versions)
+	var mod models.Mod
+	var versions []models.ModVersion
+	database.GetDBInstance().Instance.First(&mod, "name = ?", vars["slug"])
+	database.GetDBInstance().Instance.Table("modversions").Where("mod_id = ?", mod.ID).Find(&versions)
 
 	for _, s := range versions {
 		mod.Versions = append(mod.Versions, s.Version)

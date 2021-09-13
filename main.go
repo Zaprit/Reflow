@@ -4,8 +4,8 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"github.com/Zaprit/Reflow/Models"
-	"github.com/Zaprit/Reflow/TechnicAPI"
+	"github.com/Zaprit/Reflow/models"
+	"github.com/Zaprit/Reflow/technicapi"
 	"github.com/gorilla/mux"
 	"io/fs"
 	"net/http"
@@ -37,8 +37,8 @@ func notFound(w http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
-	APIName, _ := json.Marshal(Models.DefaultInfo)
-	fmt.Printf("Reflow %s API: \"%s\"\n", Models.DefaultInfo.Version, APIName)
+	APIName, _ := json.Marshal(models.DefaultInfo)
+	fmt.Printf("Reflow %s API: \"%s\"\n", models.DefaultInfo.Version, APIName)
 
 	_, err := os.Stat("conf")
 	if err != nil {
@@ -85,10 +85,10 @@ func main() {
 	contentStatic, _ := fs.Sub(static, "web")
 
 	r.PathPrefix("/static").Handler(http.FileServer(http.FS(contentStatic)))
-	r.HandleFunc("/api", TechnicAPI.ApiRoot)
-	r.HandleFunc("/api/mod", TechnicAPI.GetMods)
-	r.HandleFunc("/api/mod/{slug}", TechnicAPI.GetMod)
-	//r.HandleFunc("/api/mod/{slug}/{version}", TechnicAPI.GetModVersion)
+	r.HandleFunc("/api", technicapi.ApiRoot)
+	r.HandleFunc("/api/mod", technicapi.GetMods)
+	r.HandleFunc("/api/mod/{slug}", technicapi.GetMod)
+	//r.HandleFunc("/api/mod/{slug}/{version}", technicapi.GetModVersion)
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 	http.Handle("/", r)
 	err = http.ListenAndServe(":8080", nil)

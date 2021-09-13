@@ -1,8 +1,8 @@
-package Database
+package database
 
 import (
 	"fmt"
-	"github.com/Zaprit/Reflow/Config"
+	"github.com/Zaprit/Reflow/config"
 	"github.com/alyu/configparser"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -26,7 +26,7 @@ func GetDBInstance() *GormInstance {
 		lock.Lock()
 		defer lock.Unlock()
 		if singleInstance == nil {
-			config, err := configparser.Read(Config.ConfigurationFile)
+			config, err := configparser.Read(config.ConfigurationFile)
 			if err != nil {
 				panic("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
 			}
