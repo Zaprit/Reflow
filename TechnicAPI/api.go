@@ -44,7 +44,6 @@ func GetMod(w http.ResponseWriter, req *http.Request){
 		mod.Versions = append(mod.Versions, s.Version)
 	}
 	jsonMod, err := json.Marshal(mod)
-	json.
 	if err != nil {
 		fmt.Println(err.Error())
 	} else {

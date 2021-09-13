@@ -10,7 +10,7 @@ node {
         sh 'mkdir build'
         sh 'go build -o build/reflow-linux-amd64 .'
         sh 'GOOS=darwin GOARCH=arm64 go build -o build/reflow-darwin-arm64 .'
-        sh 'GOOS=win GOARCH=amd64 go build -o build/reflow-windows-amd64 .'
+        sh 'GOOS=windows GOARCH=amd64 go build -o build/reflow-windows-amd64 .'
         archiveArtifacts artifacts: 'build/*'
     }
 }
