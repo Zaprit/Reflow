@@ -34,6 +34,7 @@ type ModVersion struct {
 	Filesize  string    ` json:"filesize" `
 	URL       string    ` json:"url" gorm:"-"`
 }
+
 //ModList is for the most part a bodge to get the JSON document correct for /api/mod
 type ModList struct {
 	Mods map[string]string `json:"mods" `
