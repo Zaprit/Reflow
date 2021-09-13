@@ -3,12 +3,11 @@ package Database
 import (
 	"fmt"
 	"github.com/Zaprit/Reflow/Config"
-	"strconv"
-	"sync"
-
 	"github.com/alyu/configparser"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"strconv"
+	"sync"
 )
 
 var lock = &sync.Mutex{}
@@ -58,3 +57,4 @@ func GetDBInstance() *GormInstance {
 	}
 	return singleInstance
 }
+

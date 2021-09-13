@@ -87,6 +87,8 @@ func main() {
 	r.PathPrefix("/static").Handler(http.FileServer(http.FS(contentStatic)))
 	r.HandleFunc("/api", TechnicAPI.ApiRoot)
 	r.HandleFunc("/api/mod", TechnicAPI.GetMods)
+	r.HandleFunc("/api/mod/{slug}", TechnicAPI.GetMod)
+	//r.HandleFunc("/api/mod/{slug}/{version}", TechnicAPI.GetModVersion)
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 	http.Handle("/", r)
 	err = http.ListenAndServe(":8080", nil)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Zaprit/Reflow/Database"
 	"github.com/Zaprit/Reflow/Models"
+	"github.com/gorilla/mux"
 	"net/http"
 )
 
@@ -17,7 +18,7 @@ func ApiRoot(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func GetMods(w http.ResponseWriter, _ *http.Request){
+func GetMods(w http.ResponseWriter, _ *http.Request) {
 	var modMap = make(map[string]string)
 	var mods []Models.Mod
 
@@ -30,22 +31,30 @@ func GetMods(w http.ResponseWriter, _ *http.Request){
 	if err != nil {
 		fmt.Printf("Error in GetMods: %s", err.Error())
 	}
-	// TODO: Rewrite this into separate functions
-	//else if c.Params.Route.Get("version") == "" {
-	//
-	//	var mod Models.Mod
-	//	var versions []Models.ModVersion
-	//	Database.GetDBInstance().Instance.First(&mod, "name = ?", c.Params.Route.Get("slug"))
-	//	Database.GetDBInstance().Instance.Where("mod_id = ?", mod.ID).Find(&versions)
-	//
-	//	for _, s := range versions {
-	//		mod.Versions = append(mod.Versions, s.Version)
-	//	}
-	//	return c.RenderJSON(mod)
-	//
-	//} else {
-	//	// specific mod version TODO: Implement this
-	//
-	//	return c.RenderText("NOT YET IMPLEMENTED")
-	//}
 }
+
+func GetMod(w http.ResponseWriter, req *http.Request){
+	vars := mux.Vars(req)
+	var mod Models.Mod
+	var versions []Models.ModVersion
+	Database.GetDBInstance().Instance.First(&mod, "name = ?", vars["slug"])
+	Database.GetDBInstance().Instance.Table("modversions").Where("mod_id = ?", mod.ID).Find(&versions)
+
+	for _, s := range versions {
+		mod.Versions = append(mod.Versions, s.Version)
+	}
+	jsonMod, err := json.Marshal(mod)
+	json.
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		_, err = w.Write(jsonMod)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}
+}
+//func GetModVersion(w http.ResponseWriter, req *http.Request){
+//
+//
+//}

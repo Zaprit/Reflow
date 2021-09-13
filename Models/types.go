@@ -20,7 +20,7 @@ type Mod struct {
 	DisplayName string    ` json:"pretty_name" gorm:"column:pretty_name" `
 }
 
-type Modversion struct {
+type ModVersion struct {
 	ID        int
 	ModID     int ` json:"-" `
 	Version   string
