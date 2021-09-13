@@ -9,6 +9,11 @@ import (
 	"net/http"
 )
 
+//ApiRoot is the root function that identifies a solder compatible api
+//Stock solder returns:
+//	{"api":"TechnicSolder","version":"v0.7.7","stream":"DEV"}
+//I've never seen it not be DEV and as far as I can tell it doesn't matter what the api or version attributes are.
+//(yes I did ask the Technic devs)
 func ApiRoot(w http.ResponseWriter, _ *http.Request) {
 	out, _ := json.Marshal(models.DefaultInfo)
 	_, err := w.Write(out)
@@ -17,6 +22,9 @@ func ApiRoot(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
+//GetMods gets the list of mods from the database and displays it in a JSON document with the following format
+// {"mod-slug":"pretty-name",...}
+//Where mod-slug is the internal name used by regular solder and pretty-name is the display name
 func GetMods(w http.ResponseWriter, _ *http.Request) {
 	var modMap = make(map[string]string)
 	var mods []models.Mod
@@ -32,6 +40,15 @@ func GetMods(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
+//GetMod gets a specific mod from the database and returns it as a JSON document with the following format
+//{
+// "id":123,
+// "name":"test-mod",
+// "description":"This is a description of a test mod","author":"Test Author",
+// "link":"https://example.com",
+// "versions":["1.0"],
+// "pretty_name":"Test Mod"
+//}
 func GetMod(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	var mod models.Mod
