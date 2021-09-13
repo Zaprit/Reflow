@@ -47,7 +47,7 @@ type ModList struct {
 // An Example of an error:
 //  {"error":"Mod does not exist"}
 type APIError struct {
-	Message	string ` json:"error" `
+	Message string ` json:"error" `
 }
 
 // DefaultInfo is the default APIInfo for reflow.
