@@ -26,11 +26,11 @@ func GetDBInstance() *GormInstance {
 		lock.Lock()
 		defer lock.Unlock()
 		if singleInstance == nil {
-			config, err := configparser.Read(config.ConfigurationFile)
+			configFile, err := configparser.Read(config.ConfigurationFile)
 			if err != nil {
 				panic("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
 			}
-			section, err := config.Section("database")
+			section, err := configFile.Section("database")
 			if err != nil {
 				panic("Missing database config section in reflow.conf")
 			}
