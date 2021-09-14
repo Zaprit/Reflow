@@ -5,6 +5,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/Zaprit/Reflow)](https://goreportcard.com/report/github.com/Zaprit/Reflow)
 [![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/gomods/athens.svg)](https://github.com/gomods/athens)
 [![GoDoc reference example](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/nanomsg.org/go/mangos/v2)
+[![codecov](https://codecov.io/gh/Zaprit/Reflow/branch/master/graph/badge.svg?token=N65DIV9DSM)](https://codecov.io/gh/Zaprit/Reflow)
 
 A replacement for the somewhat aged [TechnicSolder](https://github.com/TechnicPack/TechnicSolder) server written in golang
 
