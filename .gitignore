@@ -3,3 +3,5 @@ tmp/
 build
 conf/reflow.conf
 web/node_modules
+.idea
+web/.idea
