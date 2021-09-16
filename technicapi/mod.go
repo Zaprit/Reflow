@@ -8,23 +8,10 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"github.com/Zaprit/Reflow/config"
 	"github.com/Zaprit/Reflow/database"
 	"github.com/Zaprit/Reflow/models"
 )
-
-// APIRoot is the root function that identifies a solder compatible api
-// Stock solder returns:
-// 	{"api":"TechnicSolder","version":"v0.7.7","stream":"DEV"}
-// I've never seen it not be DEV and as far as I can tell it doesn't matter what the api or version attributes are.
-// (yes I did ask the Technic devs)
-func APIRoot(w http.ResponseWriter, _ *http.Request) {
-	out, _ := json.Marshal(models.DefaultInfo)
-	_, err := w.Write(out)
-
-	if err != nil {
-		fmt.Printf("Error In /ApiRoot: %s", err.Error())
-	}
-}
 
 // GetMods gets the list of mods from the database and displays it in a JSON document with the following format
 //  {"mod-slug":"pretty-name",...}
@@ -93,7 +80,41 @@ func GetMod(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// func GetModVersion(w http.ResponseWriter, req *http.Request){
-//
-//
+// GetModVersion is the API endpoint that returns a specific version of a mod in the following JSON format
+// {
+//  "id":1,
+//  "md5":"949b3066566657167bc3da57fd1b0a83",
+//  "filesize":462,
+//  "url":"http:\/\/127.0.0.1:8080\/mods\/test-mod\/test-mod-1.0.zip"
 // }
+// the strange escaping on the url is a holdover from solder
+func GetModVersion(w http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+
+	var mod models.Mod
+
+	var version models.ModVersion
+
+	database.GetDBInstance().Instance.First(&mod, "name = ?", vars["slug"])
+	database.GetDBInstance().Instance.Table("modversions").Where("mod_id = ? AND version = ?", mod.ID, vars["version"]).First(&version)
+
+	if version.URL == "" {
+		version.URL = fmt.Sprintf("%s/%s/%s", config.RepoURL, mod.Name, version.Version)
+	}
+
+	out, err := json.Marshal(version)
+
+	if err != nil {
+		w.WriteHeader(500)
+		_, err = w.Write([]byte("Internal Server Error"))
+
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	_, err = w.Write(out)
+	if err != nil {
+		panic(err.Error())
+	}
+}
