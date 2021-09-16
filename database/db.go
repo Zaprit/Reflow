@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/alyu/configparser"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -30,12 +29,8 @@ func GetDBInstance() *GormInstance {
 		defer lock.Unlock()
 
 		if singleInstance == nil {
-			configFile, err := configparser.Read(config.ConfigurationFile)
-			if err != nil {
-				panic("Missing reflow.conf file.\nMaybe you forgot to make a config file from the example?")
-			}
 
-			section, err := configFile.Section("database")
+			section, err := config.Conf.Section("database")
 
 			if err != nil {
 				panic("Missing database config section in reflow.conf")
@@ -56,7 +51,7 @@ func GetDBInstance() *GormInstance {
 				singleInstance = &GormInstance{Instance: *postgresDB}
 
 				if err != nil {
-					fmt.Printf("Error: %s\n", err)
+					fmt.Printf("Error: %s\n", err.Error())
 				}
 			}
 		}
