@@ -6,6 +6,7 @@ type ModpackList struct {
 	MirrorURL string            `json:"mirror_url"`
 }
 
+// Modpack is a struct representation of a technic modpack
 type Modpack struct {
 	Name          string   `json:"name"`
 	DisplayName   string   `json:"display_name"`
