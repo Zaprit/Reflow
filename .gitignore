@@ -5,3 +5,4 @@ conf/reflow.conf
 web/node_modules
 .idea
 web/.idea
+.idea/reflow.iml
