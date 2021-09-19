@@ -63,20 +63,16 @@ func main() {
 
 	r.PathPrefix("/static").Handler(http.FileServer(http.FS(contentStatic)))
 	r.HandleFunc("/api", technicapi.APIRoot)
-	r.HandleFunc("/api/", technicapi.APIRoot)
+	r.HandleFunc("/api/verify/{key}", technicapi.VerifyKey)
+
 	r.HandleFunc("/api/mod", technicapi.GetMods)
-	r.HandleFunc("/api/mod/", technicapi.GetMods)
 	r.HandleFunc("/api/mod/{slug}", technicapi.GetMod)
-	r.HandleFunc("/api/mod/{slug}/", technicapi.GetMod)
 	r.HandleFunc("/api/mod/{slug}/{version}", technicapi.GetModVersion)
-	r.HandleFunc("/api/mod/{slug}/{version}/", technicapi.GetModVersion)
 
 	r.HandleFunc("/api/modpack", technicapi.GetModpacks)
 	r.HandleFunc("/api/modpack/", technicapi.GetModpacks)
 	r.HandleFunc("/api/modpack/{slug}", technicapi.GetModpack)
-	r.HandleFunc("/api/modpack/{slug}/", technicapi.GetModpack)
 	r.HandleFunc("/api/modpack/{slug}/{build}", technicapi.GetBuild)
-	r.HandleFunc("/api/modpack/{slug}/{build}/", technicapi.GetBuild)
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 
 	http.Handle("/", r)
