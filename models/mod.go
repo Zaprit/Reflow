@@ -19,10 +19,10 @@ type Mod struct {
 // A ModVersion is a version of a mod with all the things required for JSON
 type ModVersion struct {
 	DBStructTemplate
-	ModID    int    ` json:"-" `
+	ModID    int32  ` json:"-" `
 	Version  string ` json:"-" `
 	MD5      string ` json:"md5" `
-	Filesize int    ` json:"filesize" `
+	Filesize int32  ` json:"filesize" `
 	URL      string ` json:"url" gorm:"url"`
 }
 
@@ -31,11 +31,11 @@ func (ModVersion) TableName() string {
 }
 
 type ModpackMod struct {
-	ID       uint   `json:"id"`
+	ID       int32  `json:"id"`
 	Name     string `json:"name"`
 	Version  string `json:"version"`
 	MD5      string `json:"md5"`
-	Filesize int    `json:"filesize"`
+	Filesize int32  `json:"filesize"`
 	URL      string `json:"url"`
 }
 
