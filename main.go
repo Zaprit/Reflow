@@ -80,7 +80,7 @@ func main() {
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 
 	http.Handle("/", r)
-	err = http.ListenAndServe(":8080", http.HandlerFunc(loggerRequest))
+	err = http.ListenAndServe(":8080", loggingMiddleware(r))
 
 	if err != nil {
 		fmt.Println("ERROR: Something went wrong while setting up server")
@@ -88,8 +88,11 @@ func main() {
 	}
 }
 
-// loggerRequest is the custom handler used for logging incoming HTTP requests
-func loggerRequest(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("%s: %s %s\n", strings.Split(r.RemoteAddr, ":")[0], r.Method, r.URL)
-	http.DefaultServeMux.ServeHTTP(w, r)
+// this addresses trailing slashes and logs HTTP requests
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+		fmt.Printf("%s: %s %s\n", strings.Split(r.RemoteAddr, ":")[0], r.Method, r.RequestURI)
+		next.ServeHTTP(w, r)
+	})
 }
