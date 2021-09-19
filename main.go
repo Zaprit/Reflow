@@ -51,7 +51,7 @@ func main() {
 	config.LoadConfig()
 	config.LoadRepoConfig()
 
-	err := database.GetDBInstance().Instance.AutoMigrate(&models.Mod{}, &models.ModVersion{})
+	err := database.GetDBInstance().AutoMigrate(&models.Mod{}, &models.ModVersion{})
 
 	if err != nil {
 		return

@@ -21,7 +21,7 @@ func GetMods(w http.ResponseWriter, _ *http.Request) {
 
 	var mods []models.Mod
 
-	database.GetDBInstance().Instance.Find(&mods)
+	database.GetDBInstance().Find(&mods)
 
 	for i := range mods {
 		modMap[mods[i].Name] = mods[i].DisplayName
@@ -52,8 +52,8 @@ func GetMod(w http.ResponseWriter, req *http.Request) {
 
 	var versions []models.ModVersion
 
-	database.GetDBInstance().Instance.First(&mod, "name = ?", vars["slug"])
-	database.GetDBInstance().Instance.Table("modversions").Where("mod_id = ?", mod.ID).Find(&versions)
+	database.GetDBInstance().First(&mod, "name = ?", vars["slug"])
+	database.GetDBInstance().Table("modversions").Where("mod_id = ?", mod.ID).Find(&versions)
 
 	for s := range versions {
 		mod.Versions = append(mod.Versions, versions[s].Version)
@@ -95,8 +95,8 @@ func GetModVersion(w http.ResponseWriter, req *http.Request) {
 
 	var version models.ModVersion
 
-	database.GetDBInstance().Instance.First(&mod, "name = ?", vars["slug"])
-	database.GetDBInstance().Instance.Table("modversions").Where("mod_id = ? AND version = ?", mod.ID, vars["version"]).First(&version)
+	database.GetDBInstance().First(&mod, "name = ?", vars["slug"])
+	database.GetDBInstance().Where("mod_id = ? AND version = ?", mod.ID, vars["version"]).First(&version)
 
 	if version.URL == "" {
 		version.URL = fmt.Sprintf("%s/%s/%s", config.RepoURL, mod.Name, version.Version)
