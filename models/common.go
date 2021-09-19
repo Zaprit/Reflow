@@ -1,7 +1,12 @@
 // Package models contains the structs for the various things
 package models
 
-// APIInfo is the information required to make the technic client believe that we are definitely talking to a solder server.
+import (
+	"encoding/json"
+	"time"
+)
+
+// APIInfo is the information sent to the technic client to verify that we're definitely talking to a solder server.
 // In reality the client isn't very picky.
 type APIInfo struct {
 	Name    string ` json:"api" `
@@ -14,6 +19,19 @@ type APIInfo struct {
 //  {"error":"Mod does not exist"}
 type APIError struct {
 	Message string ` json:"error" `
+}
+
+func APIErrorJSON(Error string) []byte {
+	out, _ := json.Marshal(APIError{Message: Error})
+	return out
+}
+
+// DBStructTemplate most all the tables in the database have these fields.
+// This is similar to the GORM one but without the deletedAt field.
+type DBStructTemplate struct {
+	ID        uint      ` gorm:"primaryKey" `
+	CreatedAt time.Time ` json:"-" `
+	UpdatedAt time.Time ` json:"-" `
 }
 
 // DefaultInfo is the default APIInfo for reflow.
