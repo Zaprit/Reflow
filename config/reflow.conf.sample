@@ -5,3 +5,6 @@ port = 5432
 database = reflow
 username = 
 password = 
+
+[repo]
+repo_url = http://<REPOURLHERE>
