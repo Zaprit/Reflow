@@ -52,6 +52,7 @@ func GetModpack(w http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			panic(err.Error())
 		}
+		return
 	}
 
 	database.GetDBInstance().Find(&builds).Where("name = ?", vars["slug"])
