@@ -1,10 +1,5 @@
 package models
 
-import (
-	"encoding/json"
-	"fmt"
-)
-
 // A Mod is a singular mod roughly compliant with what comes out the database and what gets turned into JSON
 type Mod struct {
 	DBStructTemplate
@@ -26,10 +21,12 @@ type ModVersion struct {
 	URL      string ` json:"url" gorm:"url"`
 }
 
+// TableName is the tabler interface function for GORM
 func (ModVersion) TableName() string {
 	return "modversions"
 }
 
+// ModpackMod is the mod version type returned by /api/modpack/<slug>/<build>
 type ModpackMod struct {
 	ID       int32  `json:"id"`
 	Name     string `json:"name"`
@@ -40,32 +37,27 @@ type ModpackMod struct {
 }
 
 // ModpackModFormat converts a mod and a modVersion into a modpack build compatible doodad
-func ModpackModFormat(mod *Mod, modVersion *ModVersion) []byte {
-	out, err := json.Marshal(ModpackMod{
+func ModpackModFormat(mod *Mod, modVersion *ModVersion) ModpackMod{
+	return ModpackMod{
 		ID:       mod.ID,
 		Name:     mod.Name,
 		Version:  modVersion.Version,
 		MD5:      modVersion.MD5,
 		Filesize: modVersion.Filesize,
 		URL:      modVersion.URL,
-	})
-
-	if err != nil {
-		fmt.Printf("ERROR: %s", err.Error())
 	}
-
-	return out
-}
-
-func (BuildModversion) TableName() string {
-	return "build_modversion"
 }
 
 // BuildModversion is the DB map between modversions and modpack builds
 type BuildModversion struct {
 	DBStructTemplate
-	ModVersionID uint
+	ModVersionID uint ` gorm:"column:modversion_id" `
 	BuildID      uint
+}
+
+// TableName is the tabler interface function for GORM
+func (BuildModversion) TableName() string {
+	return "build_modversion"
 }
 
 // ModList is for the most part a bodge to get the JSON document correct for /api/mod

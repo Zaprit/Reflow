@@ -9,8 +9,8 @@ type ModpackList struct {
 // Modpack is a struct representation of a technic modpack
 type Modpack struct {
 	DBStructTemplate
-	Name          string   ` json:"name" gorm:"slug" `
-	DisplayName   string   ` json:"display_name" gorm:"name" `
+	Name          string   ` json:"name" gorm:"column:slug" `
+	DisplayName   string   ` json:"display_name" gorm:"column:name" `
 	URL           string   ` json:"url" `
 	Icon          bool     ` json:"-" `
 	IconURL       string   ` json:"icon" `

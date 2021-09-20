@@ -45,17 +45,18 @@ func GetModpack(w http.ResponseWriter, req *http.Request) {
 
 	var builds []models.ModpackBuild
 
-	result := database.GetDBInstance().First(&modpack).Where("name = ?", vars["slug"])
+	result := database.GetDBInstance().First(&modpack).Where("slug = ?", vars["slug"])
 
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		_, err := w.Write(models.APIErrorJSON("Modpack does not exist/Build does not exist"))
 		if err != nil {
 			panic(err.Error())
 		}
+
 		return
 	}
 
-	database.GetDBInstance().Find(&builds).Where("name = ?", vars["slug"])
+	database.GetDBInstance().Find(&builds).Where("modpack_id = ?", modpack.ID)
 
 	for i := range builds {
 		modpack.Builds = append(modpack.Builds, builds[i].Version)
@@ -74,6 +75,63 @@ func GetModpack(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
+// GetBuild assembles a build struct from the database and returns it as JSON
 func GetBuild(w http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
 
+	var modpack models.Modpack
+
+	var build models.ModpackBuild
+
+	result := database.GetDBInstance().Where("slug = ?", vars["slug"]).Take(&modpack)
+
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		_, err := w.Write(models.APIErrorJSON("Modpack does not exist"))
+		if err != nil {
+			panic(err.Error())
+		}
+
+		return
+	}
+
+	result2 := database.GetDBInstance().Where("modpack_id = ? and version = ?", modpack.ID, vars["build"]).Take(&build)
+
+	if errors.Is(result2.Error, gorm.ErrRecordNotFound) {
+		_, err := w.Write(models.APIErrorJSON("Build does not exist"))
+		if err != nil {
+			panic(err.Error())
+		}
+
+		return
+	}
+
+	var buildModversions []models.BuildModversion
+
+	database.GetDBInstance().Where("build_id = ?", build.ID).Find(&buildModversions)
+
+	for b := range buildModversions {
+		var modversion models.ModVersion
+
+		var mod models.Mod
+
+		database.GetDBInstance().Take(&modversion, buildModversions[b].ModVersionID)
+		database.GetDBInstance().Take(&mod, modversion.ModID)
+
+		if modversion.URL == "" {
+			modversion.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.RepoURL, mod.Name, mod.Name, modversion.Version)
+		}
+
+		build.Mods = append(build.Mods, models.ModpackModFormat(&mod, &modversion))
+	}
+
+	out, err := json.Marshal(build)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = w.Write(out)
+	if err != nil {
+		panic(err.Error())
+	}
 }
