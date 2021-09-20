@@ -3,12 +3,16 @@ package database
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"sync"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 
 	"github.com/Zaprit/Reflow/config"
 )
@@ -23,7 +27,18 @@ func GetDBInstance() *gorm.DB {
 	if singleInstance == nil {
 		lock.Lock()
 		defer lock.Unlock()
+
 		if singleInstance == nil {
+			newLogger := logger.New(
+				log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+				logger.Config{
+					SlowThreshold:             time.Second,   // Slow SQL threshold
+					LogLevel:                  logger.Silent, // Log level
+					IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
+					Colorful:                  false,         // Disable color
+				},
+			)
+
 			section, err := config.Conf.Section("database")
 
 			if err != nil {
@@ -43,7 +58,7 @@ func GetDBInstance() *gorm.DB {
 			case "postgres":
 				dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 					host, user, pass, dbname, port)
-				postgresDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+				postgresDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: newLogger})
 
 				if err != nil {
 					fmt.Printf("Error: %s\n", err.Error())
@@ -54,7 +69,7 @@ func GetDBInstance() *gorm.DB {
 			case "mysql":
 				dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
 					user, pass, host, port, dbname)
-				db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+				db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
 
 				if err != nil {
 					fmt.Printf("Error: %s\n", err.Error())
@@ -63,7 +78,7 @@ func GetDBInstance() *gorm.DB {
 				singleInstance = db
 
 			case "sqlite":
-				db, err := gorm.Open(sqlite.Open("reflow.db"), &gorm.Config{})
+				db, err := gorm.Open(sqlite.Open("reflow.db"), &gorm.Config{Logger: newLogger})
 
 				if err != nil {
 					fmt.Printf("Error: %s\n", err.Error())
