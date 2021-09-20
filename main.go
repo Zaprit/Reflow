@@ -4,6 +4,7 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 
 	"io/fs"
@@ -51,7 +52,10 @@ func main() {
 	config.LoadConfig()
 	config.LoadRepoConfig()
 
-	err := database.GetDBInstance().AutoMigrate(&models.Mod{}, &models.ModVersion{}, &models.APIKey{}, models.Modpack{}, models.ModpackBuild{}, models.BuildModversion{})
+	err := database.GetDBInstance().AutoMigrate(
+		&models.Mod{}, &models.ModVersion{},
+		&models.APIKey{}, &models.Modpack{},
+		&models.ModpackBuild{}, &models.BuildModversion{})
 
 	if err != nil {
 		return
@@ -76,7 +80,15 @@ func main() {
 	r.NotFoundHandler = http.HandlerFunc(notFound)
 
 	http.Handle("/", r)
-	err = http.ListenAndServe(":8080", loggingMiddleware(r))
+
+	server, err := config.Conf.Section("server")
+
+	if err != nil {
+		log.Panicf("invalid server configuration: %s", err.Error())
+	}
+
+	fmt.Printf("Starting server on port %s\n", server.ValueOf("port"))
+	err = http.ListenAndServe(fmt.Sprintf(":%s", server.ValueOf("port")), loggingMiddleware(r))
 
 	if err != nil {
 		fmt.Println("ERROR: Something went wrong while setting up server")
