@@ -6,5 +6,8 @@ database = reflow
 username = 
 password = 
 
+[server]
+port = 8080
+
 [repo]
 repo_url = http://<REPOURLHERE>
