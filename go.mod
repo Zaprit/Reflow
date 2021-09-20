@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/alyu/configparser v0.0.0-20191103060215-744e9a66e7bc
 	github.com/gorilla/mux v1.8.0
+	gopkg.in/guregu/null.v4 v4.0.0
 	gorm.io/driver/mysql v1.1.2
 	gorm.io/driver/postgres v1.1.1
 	gorm.io/driver/sqlite v1.1.5

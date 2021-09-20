@@ -1,5 +1,7 @@
 package models
 
+import "gopkg.in/guregu/null.v4"
+
 // ModpackList is a list of slug/name pairs and the mirror URL, don't know why it's done like this but eh what can you do
 type ModpackList struct {
 	Modpacks  map[string]string `json:"modpacks" `
@@ -41,9 +43,9 @@ type ModpackBuild struct {
 	ModpackID   int32        ` json:"-" `
 	Version     string       ` json:"-" `
 	Minecraft   string       ` json:"minecraft" `
-	Java        string       ` json:"java" gorm:"min_java" `
-	Memory      int32        ` json:"memory" `
-	Forge       string       ` json:"forge" `
+	Java        string       ` json:"java" gorm:"column:min_java" `
+	Memory      int32        ` json:"memory" gorm:"column:min_memory" `
+	Forge       null.String  ` json:"forge" `
 	Mods        []ModpackMod ` json:"mods" gorm:"-" `
 	IsPublished bool         ` json:"-"`
 	Private     bool         ` json:"-" `
