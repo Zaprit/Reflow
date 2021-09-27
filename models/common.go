@@ -21,8 +21,9 @@ type APIError struct {
 	Message string ` json:"error" `
 }
 
-func APIErrorJSON(Error string) []byte {
-	out, _ := json.Marshal(APIError{Message: Error})
+// APIErrorJSON takes an error string, marshals it to JSON and returns it in a solder compatible format
+func APIErrorJSON(e string) []byte {
+	out, _ := json.Marshal(APIError{Message: e})
 	return out
 }
 
