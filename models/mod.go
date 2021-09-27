@@ -37,7 +37,7 @@ type ModpackMod struct {
 }
 
 // ModpackModFormat converts a mod and a modVersion into a modpack build compatible doodad
-func ModpackModFormat(mod *Mod, modVersion *ModVersion) ModpackMod{
+func ModpackModFormat(mod *Mod, modVersion *ModVersion) ModpackMod {
 	return ModpackMod{
 		ID:       mod.ID,
 		Name:     mod.Name,
