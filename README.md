@@ -6,6 +6,7 @@
 [![GitHub go.mod Go version of a Go module](https://img.shields.io/github/go-mod/go-version/gomods/athens.svg)](https://github.com/gomods/athens)
 [![GoDoc reference example](https://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/nanomsg.org/go/mangos/v2)
 [![codecov](https://codecov.io/gh/Zaprit/Reflow/branch/master/graph/badge.svg?token=N65DIV9DSM)](https://codecov.io/gh/Zaprit/Reflow)
+![Discord](https://img.shields.io/discord/886962492335599656?color=7289DA&label=Reflow%20Discord)
 
 A replacement for the somewhat aged [TechnicSolder](https://github.com/TechnicPack/TechnicSolder) server written in golang
 
