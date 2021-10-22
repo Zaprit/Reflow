@@ -1,9 +1,9 @@
 package technicapi
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/Zaprit/Reflow/utils"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -29,7 +29,7 @@ func GetModpacks(w http.ResponseWriter, _ *http.Request) {
 		out.Modpacks[modpacks[i].Name] = modpacks[i].DisplayName
 	}
 
-	outJSON, _ := json.Marshal(out)
+	outJSON := utils.Marshal(out)
 	_, err := w.Write(outJSON)
 
 	if err != nil {
@@ -62,13 +62,9 @@ func GetModpack(w http.ResponseWriter, req *http.Request) {
 		modpack.Builds = append(modpack.Builds, builds[i].Version)
 	}
 
-	out, err := json.Marshal(modpack)
+	out := utils.Marshal(modpack)
 
-	if err != nil {
-		panic(err.Error())
-	}
-
-	_, err = w.Write(out)
+	_, err := w.Write(out)
 
 	if err != nil {
 		panic(err.Error())
@@ -124,13 +120,9 @@ func GetBuild(w http.ResponseWriter, req *http.Request) {
 		build.Mods = append(build.Mods, models.ModpackModFormat(&mod, &modversion))
 	}
 
-	out, err := json.Marshal(build)
+	out := utils.Marshal(build)
 
-	if err != nil {
-		panic(err.Error())
-	}
-
-	_, err = w.Write(out)
+	_, err := w.Write(out)
 	if err != nil {
 		panic(err.Error())
 	}
