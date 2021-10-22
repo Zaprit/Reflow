@@ -30,7 +30,7 @@ func APIErrorJSON(e string) []byte {
 // DBStructTemplate most all the tables in the database have these fields.
 // This is similar to the GORM one but without the deletedAt field.
 type DBStructTemplate struct {
-	ID        int32     ` gorm:"primaryKey" `
+	ID        int32     ` gorm:"primaryKey" json:"-" `
 	CreatedAt time.Time ` json:"-" `
 	UpdatedAt time.Time ` json:"-" `
 }
