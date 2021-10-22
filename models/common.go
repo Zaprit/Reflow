@@ -34,6 +34,3 @@ type DBStructTemplate struct {
 	CreatedAt time.Time ` json:"-" `
 	UpdatedAt time.Time ` json:"-" `
 }
-
-// DefaultInfo is the default APIInfo for reflow.
-var DefaultInfo = APIInfo{Name: "Reflow", Version: "v0.1", Stream: "DEV"}

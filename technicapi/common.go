@@ -3,7 +3,7 @@ package technicapi
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Zaprit/Reflow/models"
+	"github.com/Zaprit/Reflow/config"
 	"net/http"
 )
 
@@ -13,7 +13,7 @@ import (
 // I've never seen it not be DEV and as far as I can tell it doesn't matter what the api or version attributes are.
 // (yes I did ask the Technic devs)
 func APIRoot(w http.ResponseWriter, _ *http.Request) {
-	out, _ := json.Marshal(models.DefaultInfo)
+	out, _ := json.Marshal(config.DefaultInfo)
 	_, err := w.Write(out)
 
 	if err != nil {
