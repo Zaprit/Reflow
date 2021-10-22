@@ -46,8 +46,8 @@ func notFound(w http.ResponseWriter, _ *http.Request) {
 }
 
 func main() {
-	APIName, _ := json.Marshal(models.DefaultInfo)
-	fmt.Printf("Reflow %s API: \"%s\"\n", models.DefaultInfo.Version, APIName)
+	APIName, _ := json.Marshal(config.DefaultInfo)
+	fmt.Printf("Reflow %s API: \"%s\"\n", config.DefaultInfo.Version, APIName)
 
 	config.LoadConfig()
 	config.LoadRepoConfig()
