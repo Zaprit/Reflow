@@ -43,6 +43,7 @@ type ModpackBuild struct {
 	ModpackID   int32        ` json:"-" `
 	Version     string       ` json:"-" `
 	Minecraft   string       ` json:"minecraft" `
+	MinecraftMD5 string ` json:"minecraft_md5"`
 	Java        string       ` json:"java" gorm:"column:min_java" `
 	Memory      int32        ` json:"memory" gorm:"column:min_memory" `
 	Forge       null.String  ` json:"forge" `
