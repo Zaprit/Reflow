@@ -3,8 +3,9 @@ package technicapi
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Zaprit/Reflow/config"
 	"net/http"
+
+	"github.com/Zaprit/Reflow/config"
 )
 
 // APIRoot is the root function that identifies a solder compatible api
