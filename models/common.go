@@ -34,3 +34,9 @@ type DBStructTemplate struct {
 	CreatedAt time.Time ` json:"-" `
 	UpdatedAt time.Time ` json:"-" `
 }
+
+type DBStructTemplateID struct {
+	ID        int32     ` gorm:"primaryKey" json:"id" `
+	CreatedAt time.Time ` json:"-" `
+	UpdatedAt time.Time ` json:"-" `
+}

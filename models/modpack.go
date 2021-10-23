@@ -39,7 +39,7 @@ type ListModpack struct {
 
 // ModpackBuild is a struct representation of a modpack build.
 type ModpackBuild struct {
-	DBStructTemplate
+	DBStructTemplateID
 	ModpackID    int32        ` json:"-" `
 	Version      string       ` json:"-" `
 	Minecraft    string       ` json:"minecraft" `
