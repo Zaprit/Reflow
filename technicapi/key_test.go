@@ -9,8 +9,8 @@ import (
 	"github.com/Zaprit/Reflow/models"
 )
 
+// TestVerifyKey Tests the VerifyKey REST endpoint
 func TestVerifyKey(t *testing.T) {
-
 	database.CreateDBInstance(database.DBConfig{
 		Driver: "sqlite",
 		DBName: "file::memory:?cache=shared",
@@ -29,7 +29,6 @@ func TestVerifyKey(t *testing.T) {
 	go internal.StartTestServer("/api/verify/{key}", VerifyKey)
 
 	body, err := internal.TestClient("/api/verify/testkey2341352463")
-
 	if err != nil {
 		t.Fatal(err.Error())
 	}
@@ -43,6 +42,21 @@ func TestVerifyKey(t *testing.T) {
 
 	if key.Name != "Test Key" {
 		t.Fatalf("Key Mismatch, Expected: %v, Received: %v\nIn Data: %s", "Test Key", key.Name, body)
+	}
+
+	shouldFail, err := internal.TestClient("/api/verify/ono")
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
+	var errorMessage models.APIError
+	err3 := json.Unmarshal(shouldFail, &errorMessage)
+	if err3 != nil {
+		t.Fatal(err3.Error())
+	}
+
+	if errorMessage.Message != "Invalid key provided." {
+		t.Fatal("Somehow the key passed despite being invalid")
 	}
 
 }
