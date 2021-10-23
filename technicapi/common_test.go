@@ -37,8 +37,12 @@ func TestAPIRoot(t *testing.T) {
 
 	err = json.Unmarshal(body, &info)
 
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+
 	if ! reflect.DeepEqual(info, config.DefaultInfo) {
-		t.Fatal("OOF")
+		t.Fatalf("API Info Mismatch Expected: %v, Recieved: %v", config.DefaultInfo, info)
 	}
 
 }
