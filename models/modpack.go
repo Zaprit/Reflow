@@ -40,16 +40,16 @@ type ListModpack struct {
 // ModpackBuild is a struct representation of a modpack build.
 type ModpackBuild struct {
 	DBStructTemplate
-	ModpackID   int32        ` json:"-" `
-	Version     string       ` json:"-" `
-	Minecraft   string       ` json:"minecraft" `
-	MinecraftMD5 string ` json:"minecraft_md5"`
-	Java        string       ` json:"java" gorm:"column:min_java" `
-	Memory      int32        ` json:"memory" gorm:"column:min_memory" `
-	Forge       null.String  ` json:"forge" `
-	Mods        []ModpackMod ` json:"mods" gorm:"-" `
-	IsPublished bool         ` json:"-"`
-	Private     bool         ` json:"-" `
+	ModpackID    int32        ` json:"-" `
+	Version      string       ` json:"-" `
+	Minecraft    string       ` json:"minecraft" `
+	MinecraftMD5 string       ` json:"minecraft_md5"`
+	Java         string       ` json:"java" gorm:"column:min_java" `
+	Memory       int32        ` json:"memory" gorm:"column:min_memory" `
+	Forge        null.String  ` json:"forge" `
+	Mods         []ModpackMod ` json:"mods" gorm:"-" `
+	IsPublished  bool         ` json:"-"`
+	Private      bool         ` json:"-" `
 }
 
 // TableName is the Tabler interface that provides a table name for GORM
