@@ -6,3 +6,5 @@ web/node_modules
 .idea
 web/.idea
 .idea/reflow.iml
+*.sqlite3
+*.db

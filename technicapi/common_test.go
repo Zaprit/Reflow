@@ -2,71 +2,31 @@ package technicapi
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/Zaprit/Reflow/config"
-	"github.com/Zaprit/Reflow/models"
-	"io/ioutil"
-	"log"
-	"net/http"
 	"reflect"
-	"strings"
 	"testing"
-	"time"
 
-	"github.com/gorilla/mux"
+	"github.com/Zaprit/Reflow/config"
+	"github.com/Zaprit/Reflow/internal"
+	"github.com/Zaprit/Reflow/models"
 )
 
 func TestAPIRoot(t *testing.T) {
+	go internal.StartTestServer("/api", APIRoot)
 
-	go startServer("/api", APIRoot)
-
-	time.Sleep(time.Second)
-
-	resp, err := http.Get("http://localhost:8069/api")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		panic(err.Error())
-	}
-
-	var info models.APIInfo
-
-	err = json.Unmarshal(body, &info)
+	body, err := internal.TestClient("/api")
 
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	if ! reflect.DeepEqual(info, config.DefaultInfo) {
-		t.Fatalf("API Info Mismatch Expected: %v, Recieved: %v", config.DefaultInfo, info)
+	var info models.APIInfo
+
+	er2 := json.Unmarshal(body, &info)
+	if er2 != nil {
+		t.Fatal(er2.Error())
 	}
 
-}
-
-func startServer(path string, handler http.HandlerFunc){
-	r := mux.NewRouter()
-
-	r.HandleFunc(path, handler)
-
-	http.Handle("/", r)
-
-	err := http.ListenAndServe("localhost:8069", loggingMiddleware(r))
-
-	if err != nil {
-		fmt.Println("ERROR: Something went wrong while setting up server")
-		panic(err)
+	if !reflect.DeepEqual(info, config.DefaultInfo) {
+		t.Fatalf("API Info Mismatch Expected: %v, Received: %v", config.DefaultInfo, info)
 	}
-
-}
-
-func loggingMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
-		fmt.Printf("%s: %s %s\n", strings.Split(r.RemoteAddr, ":")[0], r.Method, r.RequestURI)
-		next.ServeHTTP(w, r)
-	})
 }
