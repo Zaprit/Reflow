@@ -1,0 +1,24 @@
+# This lints the Reflow project
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Go environment
+        uses: actions/setup-go@v2.1.3
+        with:
+          go-version: 1.17.1
+          stable: true
+          token: ${{ github.token }}
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2.5.2
