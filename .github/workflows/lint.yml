@@ -1,6 +1,6 @@
 # This lints the Reflow project
 
-name: CI
+name: Lint
 
 on:
   push:
