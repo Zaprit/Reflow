@@ -8,7 +8,7 @@ import (
 
 // Performs a HTTP GET on the path specified and returns the response or an error
 func TestClient(path string) ([]byte, error) {
-	resp, err := http.Get("http://localhost:8069" + path)
+	resp, err := http.Get("http://127.0.0.1:8069" + path)
 	if err != nil {
 		log.Fatalln(err)
 	}

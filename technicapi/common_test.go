@@ -40,7 +40,7 @@ func TestMain(m *testing.M) {
 
 	InitDB()
 
-	go StartServer("localhost:8069")
+	go StartServer("127.0.0.1:8069")
 
 	code := m.Run()
 
