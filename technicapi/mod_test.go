@@ -2,7 +2,7 @@ package technicapi
 
 import (
 	"encoding/json"
-	"net/http"
+	"reflect"
 	"testing"
 	"time"
 
@@ -12,76 +12,57 @@ import (
 )
 
 func TestGetMod(t *testing.T) {
-	database.CreateDBInstance(database.DBConfig{
+	database.CreateDBInstance(&database.DBConfig{
 		Driver: "sqlite",
 		DBName: "file::memory:?cache=shared",
 	})
 
-	err := database.GetDBInstance().AutoMigrate(&models.Mod{})
-	if err != nil {
-		t.Fatal(err.Error())
-	}
-
-	database.GetDBInstance().Create(&models.Mod{
+	dbMod := models.Mod{
 		DBStructTemplate: models.DBStructTemplate{CreatedAt: time.Now()},
-		Name:             "Test-Mod",
+		Name:             "test-mod",
 		Description:      "Test Mod Description",
 		Author:           "Test Author",
-		Link:             "http://example.com",
-		Versions:         nil,
+		Link:             "https://example.com",
 		DisplayName:      "Test Mod",
-	})
+	}
+	database.GetDBInstance().Create(&dbMod)
 
-	go internal.StartTestServer("/api/verify/{key}", VerifyKey)
+	var modFromDB models.Mod
 
-	body, err := internal.TestClient("/api/verify/testkey2341352463")
+	database.GetDBInstance().Limit(1).Where("name = ?", "test-mod").Take(&modFromDB)
+
+	dbModVersion := models.ModVersion{
+		ModID:    modFromDB.ID,
+		Version:  "1.0",
+		MD5:      "notARealMD5hash",
+		Filesize: 12345677,
+		URL:      "https://example.com",
+	}
+
+	database.GetDBInstance().Create(&dbModVersion)
+
+	body, err := internal.TestClient("/api/mod/test-mod")
 
 	if err != nil {
 		t.Fatal(err.Error())
 	}
 
-	var key models.APIKeyVerifyResponse
+	var mod models.Mod
 
-	er2 := json.Unmarshal(body, &key)
+	er2 := json.Unmarshal(body, &mod)
 	if er2 != nil {
 		t.Fatal(er2.Error())
 	}
 
-	if key.Name != "Test Key" {
-		t.Fatalf("Key Mismatch, Expected: %v, Received: %v\nIn Data: %s", "Test Key", key.Name, body)
+	if reflect.DeepEqual(&dbMod, &mod) {
+		t.Fatalf("Mod Mismatch, Expected: %v, Received: %v\nIn Data: %s", dbMod, mod, body)
 	}
 }
 
 func TestGetModVersion(t *testing.T) {
-	type args struct {
-		w   http.ResponseWriter
-		req *http.Request
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-		})
-	}
+
 }
 
 func TestGetMods(t *testing.T) {
-	type args struct {
-		w   http.ResponseWriter
-		in1 *http.Request
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-		})
-	}
+
 }

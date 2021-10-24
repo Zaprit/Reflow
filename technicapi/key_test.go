@@ -9,24 +9,15 @@ import (
 	"github.com/Zaprit/Reflow/models"
 )
 
+const testKey = "Test Key"
+
 // TestVerifyKey Tests the VerifyKey REST endpoint
 func TestVerifyKey(t *testing.T) {
-	database.CreateDBInstance(database.DBConfig{
-		Driver: "sqlite",
-		DBName: "file::memory:?cache=shared",
-	})
-
-	err := database.GetDBInstance().AutoMigrate(&models.APIKey{})
-	if err != nil {
-		t.Fatal(err.Error())
-	}
 
 	database.GetDBInstance().Create(&models.APIKey{
-		Name:   "Test Key",
+		Name:   testKey,
 		APIKey: "testkey2341352463",
 	})
-
-	go internal.StartTestServer("/api/verify/{key}", VerifyKey)
 
 	body, err := internal.TestClient("/api/verify/testkey2341352463")
 	if err != nil {
@@ -40,8 +31,8 @@ func TestVerifyKey(t *testing.T) {
 		t.Fatal(er2.Error())
 	}
 
-	if key.Name != "Test Key" {
-		t.Fatalf("Key Mismatch, Expected: %v, Received: %v\nIn Data: %s", "Test Key", key.Name, body)
+	if key.Name != testKey {
+		t.Fatalf("Key Mismatch, Expected: %v, Received: %v\nIn Data: %s", testKey, key.Name, body)
 	}
 
 	shouldFail, err := internal.TestClient("/api/verify/ono")
@@ -51,6 +42,7 @@ func TestVerifyKey(t *testing.T) {
 
 	var errorMessage models.APIError
 	err3 := json.Unmarshal(shouldFail, &errorMessage)
+
 	if err3 != nil {
 		t.Fatal(err3.Error())
 	}
