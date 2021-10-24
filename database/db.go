@@ -26,8 +26,8 @@ func GetDBInstance() *gorm.DB {
 	lock.Lock()
 	defer lock.Unlock()
 
-	// Check if it's been initialised
-	if !(singleton == nil) {
+	// Check if it's been initialized
+	if singleton != nil {
 		return singleton
 	}
 
@@ -37,7 +37,7 @@ func GetDBInstance() *gorm.DB {
 		panic("Missing database config section in reflow.conf")
 	}
 
-	CreateDBInstance(DBConfig{
+	CreateDBInstance(&DBConfig{
 		section.ValueOf("driver"),
 		section.ValueOf("hostname"),
 		section.ValueOf("port"),
@@ -49,7 +49,12 @@ func GetDBInstance() *gorm.DB {
 	return singleton
 }
 
-func CreateDBInstance(dbConfig DBConfig) *gorm.DB {
+func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
+
+	// For tests to work mostly
+	if singleton != nil {
+		return singleton
+	}
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -80,7 +85,6 @@ func CreateDBInstance(dbConfig DBConfig) *gorm.DB {
 		singleton = db
 
 	case "sqlite":
-
 		var db *gorm.DB
 
 		var err error
