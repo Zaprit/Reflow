@@ -90,7 +90,7 @@ func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
 		var err error
 
 		if dbConfig.DBName != "" {
-			db, err = gorm.Open(sqlite.Open(dbConfig.DBName), &gorm.Config{})
+			db, err = gorm.Open(sqlite.Open(dbConfig.DBName), &gorm.Config{Logger: newLogger})
 		} else {
 			db, err = gorm.Open(sqlite.Open("reflow.db"), &gorm.Config{Logger: newLogger})
 		}

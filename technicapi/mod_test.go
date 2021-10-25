@@ -2,9 +2,12 @@ package technicapi
 
 import (
 	"encoding/json"
+	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/gorilla/mux"
 
 	"github.com/Zaprit/Reflow/database"
 	"github.com/Zaprit/Reflow/internal"
@@ -41,7 +44,12 @@ func TestGetMod(t *testing.T) {
 
 	database.GetDBInstance().Create(&dbModVersion)
 
-	body, err := internal.TestClient("/api/mod/test-mod")
+	r := mux.NewRouter()
+	r.HandleFunc("/api/mod/{slug}", GetMod)
+
+	ts := httptest.NewServer(r)
+
+	body, err := internal.TestClient(ts.URL + "/api/mod/test-mod")
 
 	if err != nil {
 		t.Fatal(err.Error())
