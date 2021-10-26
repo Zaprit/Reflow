@@ -8,3 +8,4 @@ web/.idea
 .idea/reflow.iml
 *.sqlite3
 *.db
+coverage.txt
