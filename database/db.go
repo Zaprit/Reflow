@@ -7,6 +7,8 @@ import (
 	"os"
 	"sync"
 
+	"github.com/Zaprit/Reflow/models"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -49,6 +51,7 @@ func GetDBInstance() *gorm.DB {
 	return singleton
 }
 
+// CreateDBInstance functions almost identically to GetDBInstance but lets you specify configuration
 func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
 
 	// For tests to work mostly
@@ -105,4 +108,15 @@ func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
 	}
 
 	return singleton
+}
+
+// InitDB Initializes and migrates the DB ready for use by the server
+func InitDB() {
+	err := GetDBInstance().AutoMigrate(
+		&models.Mod{}, &models.ModVersion{},
+		&models.APIKey{}, &models.Modpack{},
+		&models.ModpackBuild{}, &models.BuildModversion{})
+	if err != nil {
+		panic("Failed to migrate tables")
+	}
 }

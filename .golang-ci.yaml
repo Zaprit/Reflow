@@ -49,7 +49,6 @@ linters:
     - dupl
     - errcheck
     - funlen
-    - gochecknoinits
     - gocognit
     - goconst
     - gocritic
@@ -85,7 +84,7 @@ run:
   skip-dirs:
     - .github
     - build
-    - web
+    - static
 
 issues:
   exclude-rules:

@@ -2,9 +2,9 @@ test-results/
 tmp/
 build
 conf/reflow.conf
-web/node_modules
+static/static/node_modules
 .idea
-web/.idea
+static/static/.idea
 .idea/reflow.iml
 *.sqlite3
 *.db
