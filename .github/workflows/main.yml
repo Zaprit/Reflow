@@ -5,65 +5,24 @@ name: Autobuild
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: crazymax/xgo:latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Go environment
-        uses: actions/setup-go@v2.1.3
-        with:
-          go-version: 1.17.1
-          stable: true
-          token: ${{ github.token }}
-
-      - name: Build Reflow (Linux x64)
+      - name: Get Dependencies
         run: |
-          go build -o reflow-linux-x64
-          zip reflow-linux-x64.zip reflow-linux-x64
-      - name: Build Reflow (Linux i386)
+          apk add --no-cache zip
+      - name: Build Reflow
         run: |
-          GOOS=linux GOARCH=386 go build -o reflow-linux-i386
-          zip reflow-linux-i386.zip reflow-linux-i386
-      - name: Build Reflow (Linux ARM64)
-        run: |
-          GOOS=linux GOARCH=arm64 go build -o reflow-linux-arm64
-          zip reflow-linux-arm64.zip reflow-linux-arm64
-      - name: Build Reflow (Linux ARM)
-        run: |
-          GOOS=linux GOARCH=arm go build -o reflow-linux-arm
-          zip reflow-linux-arm.zip reflow-linux-arm
-
-      - name: Build Reflow (Mac x64)
-        run: |
-          GOOS=darwin GOARCH=amd64 go build -o reflow-macos-x64
-          zip reflow-macos-x64.zip reflow-macos-x64
-      - name: Build Reflow (Mac ARM64)
-        run: |
-          GOOS=darwin GOARCH=arm64 go build -o reflow-macos-arm64
-          zip reflow-macos-arm64.zip reflow-macos-arm64
-          
-      - name: Build Reflow (Windows x64)
-        run: |
-          GOOS=windows GOARCH=amd64 go build -o reflow-windows-x64
-          zip reflow-windows-x64.zip reflow-windows-x64
-      - name: Build Reflow (Windows i386)
-        run: |
-          GOOS=windows GOARCH=386 go build -o reflow-windows-i386
-          zip reflow-windows-i386.zip reflow-windows-i386
-      - name: Build Reflow (Windows ARM)
-        run: |
-          GOOS=windows GOARCH=arm go build -o reflow-windows-arm
-          zip reflow-windows-arm.zip reflow-windows-arm
-      - name: Build Reflow (Windows ARM64)
-        run: |
-          GOOS=windows GOARCH=arm64 go build -o reflow-windows-arm64
-          zip reflow-windows-arm64.zip reflow-windows-arm64
+          xgo github.com/Zaprit/Reflow
+          for i in $(ls ./reflow-)
+          do
+          zip $(basename $i .exe).zip $i
+          done
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -71,5 +30,5 @@ jobs:
           prerelease: true
           title: "Reflow CI build"
           files: |
-            reflow-*-*.zip
+            reflow-*.zip
             
