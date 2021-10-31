@@ -13,9 +13,8 @@ jobs:
     container:
       image: crazymax/xgo:latest
     steps:
-      - name: Get Dependencies
-        run: |
-          apk add --no-cache zip
+      - name: Install zip
+        uses: montudor/action-zip@v1
       - name: Build Reflow
         run: |
           xgo github.com/Zaprit/Reflow
@@ -31,4 +30,4 @@ jobs:
           title: "Reflow CI build"
           files: |
             reflow-*.zip
-            
+            - name: action-zip
