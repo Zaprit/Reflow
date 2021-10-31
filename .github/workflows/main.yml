@@ -18,7 +18,7 @@ jobs:
       - name: Build Reflow
         run: |
           xgo github.com/Zaprit/Reflow
-          for i in $(ls ./reflow-)
+          for i in $(ls ./reflow-*)
           do
           zip $(basename $i .exe).zip $i
           done
