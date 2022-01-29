@@ -10,7 +10,7 @@ import (
 type DBConfig struct {
 	Driver string
 	Host   string
-	Port   string
+	Port   int
 	DBName string
 	User   string
 	Pass   string

@@ -16,16 +16,8 @@ func main() {
 	fmt.Printf("Reflow %s API: \"%s\"\n", config.DefaultInfo.Version, APIName)
 
 	config.LoadConfig()
-	config.LoadRepoConfig()
 	database.InitDB()
-	static.InitStatic()
 
-	serverConfig, err := config.Conf.Section("server")
-
-	if err != nil {
-		log.Panicf("invalid server configuration: %s", err.Error())
-	}
-
-	fmt.Printf("Starting server on port %s\n", serverConfig.ValueOf("port"))
-	technicapi.StartServer(fmt.Sprintf("%s:%s", serverConfig.ValueOf("listen"), serverConfig.ValueOf("port")))
+	fmt.Printf("Starting Reflow server on %s:%d\n", config.ConfigData.Server.Listen, config.ConfigData.Server.Port)
+	solderAPI.StartServer(fmt.Sprintf("%s:%d", config.ConfigData.Server.Listen, config.ConfigData.Server.Port))
 }

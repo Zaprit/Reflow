@@ -1,13 +1,17 @@
 [database]
-driver = postgres
-hostname = localhost
+driver = "postgres"
+hostname = "localhost"
 port = 5432
-database = reflow
+database = "reflow"
 username = 
 password = 
 
 [server]
 port = 8080
+
+tls = false
+tlscert = ""
+debug = false
 
 [repo]
 repo_url = http://<REPOURLHERE>

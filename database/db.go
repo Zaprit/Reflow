@@ -33,19 +33,13 @@ func GetDBInstance() *gorm.DB {
 		return singleton
 	}
 
-	section, err := config.Conf.Section("database")
-
-	if err != nil {
-		panic("Missing database config section in reflow.conf")
-	}
-
 	CreateDBInstance(&DBConfig{
-		section.ValueOf("driver"),
-		section.ValueOf("hostname"),
-		section.ValueOf("port"),
-		section.ValueOf("database"),
-		section.ValueOf("username"),
-		section.ValueOf("password"),
+		config.ConfigData.Database.Driver,
+		config.ConfigData.Database.Hostname,
+		config.ConfigData.Database.Port,
+		config.ConfigData.Database.Database,
+		config.ConfigData.Database.Username,
+		config.ConfigData.Database.Username,
 	})
 
 	return singleton
@@ -53,7 +47,6 @@ func GetDBInstance() *gorm.DB {
 
 // CreateDBInstance functions almost identically to GetDBInstance but lets you specify configuration
 func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
-
 	// For tests to work mostly
 	if singleton != nil {
 		return singleton
@@ -66,7 +59,7 @@ func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
 
 	switch dbConfig.Driver {
 	case "postgres":
-		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable application_name=Reflow",
 			dbConfig.Host, dbConfig.User, dbConfig.Pass, dbConfig.DBName, dbConfig.Port)
 		postgresDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{Logger: newLogger})
 
