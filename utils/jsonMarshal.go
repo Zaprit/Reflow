@@ -12,7 +12,7 @@ func Marshal(v interface{}) []byte {
 
 	var err error
 
-	if config.ConfigData.Server.Debug {
+	if config.Conf.Server.Debug {
 		out, err = json.MarshalIndent(v, "", "\t")
 	} else {
 		out, err = json.Marshal(v)

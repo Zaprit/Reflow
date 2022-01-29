@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Only the latest release will be supported for security, untill a 1.0 release is available.
+Only the latest release will be supported for security, until a 1.0 release is available.
 
 ## Reporting a Vulnerability
 

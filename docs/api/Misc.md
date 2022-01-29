@@ -1,6 +1,6 @@
 # Misc API functions
 
-These are the miscilaneous api endpoints that don't really fit anywhere else
+These are the miscellaneous api endpoints that don't really fit anywhere else
 
 ## Root
 

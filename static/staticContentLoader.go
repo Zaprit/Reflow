@@ -1,4 +1,4 @@
-// Package static is the package containing static static content
+// Package static is the package containing static content
 package static
 
 import (

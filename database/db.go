@@ -34,12 +34,12 @@ func GetDBInstance() *gorm.DB {
 	}
 
 	CreateDBInstance(&DBConfig{
-		config.ConfigData.Database.Driver,
-		config.ConfigData.Database.Hostname,
-		config.ConfigData.Database.Port,
-		config.ConfigData.Database.Database,
-		config.ConfigData.Database.Username,
-		config.ConfigData.Database.Username,
+		config.Conf.Database.Driver,
+		config.Conf.Database.Hostname,
+		config.Conf.Database.Port,
+		config.Conf.Database.Database,
+		config.Conf.Database.Username,
+		config.Conf.Database.Username,
 	})
 
 	return singleton
@@ -70,7 +70,7 @@ func CreateDBInstance(dbConfig *DBConfig) *gorm.DB {
 		singleton = postgresDB
 
 	case "mysql":
-		dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
+		dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
 			dbConfig.User, dbConfig.Pass, dbConfig.Host, dbConfig.Port, dbConfig.DBName)
 		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
 

@@ -19,7 +19,7 @@ Occasionally I'll stream development on [my Twitch](https://twitch.tv/zaprit), o
 
 See the [Wiki](https://github.com/Zaprit/Reflow/wiki) for details
 
-tl;dr you can just download a release from the right and run that, edit the config and you're off to the races
+tl;dr you can just download a release from the right and run that, edit the config, and you're off to the races
 ## Supporting development
 
 You can either directly contribute by sending patches, developing new features, or helping me out when I am smooth brained. Or if you'd like to financially support me then I've got a [Patreon](https://www.patreon.com/zaprit). 

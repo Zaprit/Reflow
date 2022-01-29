@@ -117,9 +117,9 @@ func TestGetMods(t *testing.T) {
 		t.Fatal(err.Error())
 	}
 
-	var modlist models.ModList
+	var modList models.ModList
 
-	er2 := json.Unmarshal(body, &modlist)
+	er2 := json.Unmarshal(body, &modList)
 	if er2 != nil {
 		t.Fatal(er2.Error())
 	}
@@ -130,9 +130,9 @@ func TestGetMods(t *testing.T) {
 		dbMod3.Name: dbMod3.DisplayName,
 	}
 
-	for name, prettyName := range modlist.Mods {
+	for name, prettyName := range modList.Mods {
 		if mods[name] != prettyName {
-			t.Errorf("While checking modlist response unexpected mod, expected {%s:%s}, got {%s:%s}",
+			t.Errorf("While checking modList response unexpected mod, expected {%s:%s}, got {%s:%s}",
 				name, mods[name], name, prettyName)
 		}
 	}

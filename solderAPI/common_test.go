@@ -16,7 +16,8 @@ import (
 	"github.com/Zaprit/Reflow/models"
 )
 
-const testKey = "test123!!!"
+const testKeyName = "test-key"
+const testKey = "TestSolderKey123123123!@£$'"
 
 func TestAPIRoot(t *testing.T) {
 	r := mux.NewRouter()
@@ -59,8 +60,8 @@ func TestMain(m *testing.M) {
 // TestVerifyKey Tests the VerifyKey REST endpoint
 func TestVerifyKey(t *testing.T) {
 	database.GetDBInstance().Create(&models.APIKey{
-		Name:   testKey,
-		APIKey: "testkey2341352463",
+		Name:   testKeyName,
+		APIKey: testKey,
 	})
 
 	r := mux.NewRouter()
@@ -68,7 +69,7 @@ func TestVerifyKey(t *testing.T) {
 
 	ts := httptest.NewServer(r)
 
-	body, err := internal.TestClient(ts.URL + "/api/verify/testkey2341352463")
+	body, err := internal.TestClient(ts.URL + "/api/verify/" + testKey)
 	if err != nil {
 		t.Errorf("Expected nil, Received %s", err.Error())
 	}

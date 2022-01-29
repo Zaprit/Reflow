@@ -114,7 +114,7 @@ func GetBuild(w http.ResponseWriter, req *http.Request) {
 		database.GetDBInstance().Take(&mod, modversion.ModID)
 
 		if modversion.URL == "" {
-			modversion.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.ConfigData.Repo.RepoURL, mod.Name, mod.Name, modversion.Version)
+			modversion.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.Conf.Repo.RepoURL, mod.Name, mod.Name, modversion.Version)
 		}
 
 		build.Mods = append(build.Mods, models.ModpackModFormat(&mod, &modversion))

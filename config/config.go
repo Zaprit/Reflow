@@ -3,6 +3,8 @@ package config
 
 import (
 	_ "embed" // This is required for a go embed (linter made me put this here)
+	"errors"
+	"os"
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
@@ -41,13 +43,25 @@ type RepoConfig struct {
 	RepoURL string
 }
 
-// ConfigData the struct with the config in (duh)
-var ConfigData Config
+// Conf the struct with the config in (duh)
+var Conf Config
 
 // LoadConfig loads the configuration from disk and sets Conf
 func LoadConfig() {
 
-	_, err := toml.DecodeFile(configurationFile, &ConfigData)
+	_, fileErr := os.Stat(configurationFile)
+	if errors.Is(fileErr, os.ErrNotExist) {
+		conf, err := os.Create(configurationFile)
+		if err != nil {
+			panic(err.Error())
+		}
+		_, err = conf.WriteString(defaultConfig)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	_, err := toml.DecodeFile(configurationFile, &Conf)
 	if err != nil {
 		panic(err.Error())
 	}
