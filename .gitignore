@@ -1,7 +1,7 @@
 test-results/
 tmp/
 build
-conf/reflow.conf
+conf/reflow.toml
 static/static/node_modules
 .idea
 static/static/.idea
@@ -9,3 +9,4 @@ static/static/.idea
 *.sqlite3
 *.db
 coverage.txt
+.DS_Store
