@@ -1,4 +1,4 @@
-// Internal is the place where I dump my test classes
+// Package internal is the place where I dump my test classes
 package internal
 
 import (
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// Performs a HTTP GET on the path specified and returns the response or an error
+// TestClient Performs a HTTP GET on the path specified and returns the response or an error
 func TestClient(path string) ([]byte, error) {
 	resp, err := http.Get(path) //nolint:gosec
 	if err != nil {
@@ -21,7 +21,7 @@ func TestClient(path string) ([]byte, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Unexpected Status From Server: %s", resp.Status)
+		return nil, fmt.Errorf("unexpected Status From Server: %s", resp.Status)
 	}
 
 	err = resp.Body.Close()
