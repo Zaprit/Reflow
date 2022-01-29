@@ -3,13 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
-
-	"github.com/Zaprit/Reflow/static"
 
 	"github.com/Zaprit/Reflow/database"
 
-	"github.com/Zaprit/Reflow/technicapi"
+	"github.com/Zaprit/Reflow/solderAPI"
 
 	"github.com/Zaprit/Reflow/config"
 )

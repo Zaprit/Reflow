@@ -1,10 +1,11 @@
-package technicapi
+package solderAPI
 
 import (
 	"errors"
 	"fmt"
-	"github.com/Zaprit/Reflow/utils"
 	"net/http"
+
+	"github.com/Zaprit/Reflow/utils"
 
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
@@ -21,7 +22,6 @@ func GetModpacks(w http.ResponseWriter, _ *http.Request) {
 	var modpacks []models.ListModpack
 
 	out.Modpacks = make(map[string]string)
-	out.MirrorURL = config.RepoURL
 
 	database.GetDBInstance().Model(&models.Modpack{}).Find(&modpacks)
 
@@ -114,7 +114,7 @@ func GetBuild(w http.ResponseWriter, req *http.Request) {
 		database.GetDBInstance().Take(&mod, modversion.ModID)
 
 		if modversion.URL == "" {
-			modversion.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.RepoURL, mod.Name, mod.Name, modversion.Version)
+			modversion.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.ConfigData.Repo.RepoURL, mod.Name, mod.Name, modversion.Version)
 		}
 
 		build.Mods = append(build.Mods, models.ModpackModFormat(&mod, &modversion))

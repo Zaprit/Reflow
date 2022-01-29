@@ -1,9 +1,11 @@
-package technicapi
+package solderAPI
 
 import (
 	"fmt"
 	"net/http"
 	"strings"
+
+	"github.com/Zaprit/Reflow/dashboard"
 
 	"github.com/Zaprit/Reflow/static"
 
@@ -15,6 +17,9 @@ func StartServer(listenAddress string) {
 	r := mux.NewRouter()
 
 	r.PathPrefix("/static").Handler(http.FileServer(http.FS(static.WebFS)))
+	r.HandleFunc("/", dashboard.WebDashboardRoot)
+	r.HandleFunc("/index.html", dashboard.WebDashboardRoot)
+	r.HandleFunc("/mod", dashboard.WebDashboardModList)
 	r.HandleFunc("/api", APIRoot)
 	r.HandleFunc("/api/verify/{key}", VerifyKey)
 
@@ -34,7 +39,7 @@ func StartServer(listenAddress string) {
 
 	if err != nil {
 		fmt.Println("ERROR: Something went wrong while setting up server")
-		panic(err)
+		panic(err.Error())
 	}
 }
 

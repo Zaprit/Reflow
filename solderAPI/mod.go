@@ -1,5 +1,5 @@
-// Package technicapi is the package that defines the solder compatible api
-package technicapi
+// Package solderAPI is the package that defines the solder compatible api
+package solderAPI
 
 import (
 	"encoding/json"
@@ -99,7 +99,7 @@ func GetModVersion(w http.ResponseWriter, req *http.Request) {
 	database.GetDBInstance().Where("mod_id = ? AND version = ?", mod.ID, vars["version"]).First(&version)
 
 	if version.URL == "" {
-		version.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.RepoURL, mod.Name, mod.Name, version.Version)
+		version.URL = fmt.Sprintf("%s/mods/%s/%s-%s.zip", config.ConfigData.Repo.RepoURL, mod.Name, mod.Name, version.Version)
 	}
 
 	out, err := json.Marshal(version)

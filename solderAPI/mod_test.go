@@ -1,4 +1,4 @@
-package technicapi
+package solderAPI
 
 import (
 	"encoding/json"
