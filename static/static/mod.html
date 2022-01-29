@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.PageTitle}}</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue.css">
+    <link rel="stylesheet" href="/static/css/master.css">
+</head>
+<body>
+<div class="w3-bar w3-dark-gray">
+
+    <a href="#" class="w3-bar-item w3-button"><img src="/static/img/icon.svg" alt="Reflow logo" height="px" width="23px"/> Dashboard</a>
+    <a href="#" class="w3-bar-item w3-button w3-blue">Mods</a>
+    <a href="#" class="w3-bar-item w3-button">Modpacks</a>
+    <a href="#" class="w3-bar-item w3-button">Users</a>
+    <a href="#" class="w3-bar-item w3-button">Settings</a>
+    <a href="#" class="w3-bar-item w3-button w3-right">Log Out</a>
+</div>
+<div class="w3-container">
+
+    <div class="w3-container">
+        <h1>{{.ModCount}} Mods In Reflow</h1>
+        <table class="w3-table w3-striped w3-border">
+            <thead>
+            <th>Mod Name</th>
+            <th>Mod Slug</th>
+            <th>Mod Versions</th>
+            </thead>
+            <tbody>
+            {{range .Mods}}
+            <tr>
+                <td><a href="/mods/{{.Mod.Name}}">{{.Mod.DisplayName}}</a></td>
+                <td>{{.Mod.Name}}</td>
+                <td>[{{range .ModVersions}} <a href="/mods/{{.Mod.Name}}/{{.Version}}">{{.Version}}</a> {{end}}]</td>
+            </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
