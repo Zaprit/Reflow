@@ -1,4 +1,4 @@
-# This lints the Reflow project
+# This performs linting on the Reflow project
 
 name: Lint
 
