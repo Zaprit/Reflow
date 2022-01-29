@@ -35,6 +35,7 @@ type DBStructTemplate struct {
 	UpdatedAt time.Time ` json:"-" `
 }
 
+// DBStructTemplateID is the same as DBStructTemplate however the ID is included in the JSON representation
 type DBStructTemplateID struct {
 	ID        int32     ` gorm:"primaryKey" json:"id" `
 	CreatedAt time.Time ` json:"-" `
