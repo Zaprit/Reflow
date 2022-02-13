@@ -53,9 +53,9 @@ func LoadDefaultConfig() {
 
 // LoadConfig takes a config file at the specified path and loads it, or creates configFile if it doesn't exist
 func LoadConfig(configFile string) {
-	_, fileErr := os.Stat(configurationFile)
+	_, fileErr := os.Stat(configFile)
 	if errors.Is(fileErr, os.ErrNotExist) {
-		conf, err := os.Create(configurationFile)
+		conf, err := os.Create(configFile)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -65,7 +65,7 @@ func LoadConfig(configFile string) {
 		}
 	}
 
-	_, err := toml.DecodeFile(configurationFile, &Conf)
+	_, err := toml.DecodeFile(configFile, &Conf)
 	if err != nil {
 		panic(err.Error())
 	}
