@@ -15,7 +15,7 @@ func main() {
 	APIName, _ := json.Marshal(config.DefaultInfo)
 	fmt.Printf("Reflow %s API: \"%s\"\n", config.DefaultInfo.Version, APIName)
 
-	config.LoadConfig()
+	config.LoadDefaultConfig()
 	database.InitDB()
 
 	fmt.Printf("Starting Reflow server on %s:%d\n", config.Conf.Server.Listen, config.Conf.Server.Port)

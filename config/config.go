@@ -46,9 +46,13 @@ type RepoConfig struct {
 // Conf the struct with the config in (duh)
 var Conf Config
 
-// LoadConfig loads the configuration from disk and sets Conf
-func LoadConfig() {
+// LoadDefaultConfig loads the default configuration from disk and sets Conf
+func LoadDefaultConfig() {
+	LoadConfig(configurationFile)
+}
 
+// LoadConfig takes a config file at the specified path and loads it, or creates configFile if it doesn't exist
+func LoadConfig(configFile string) {
 	_, fileErr := os.Stat(configurationFile)
 	if errors.Is(fileErr, os.ErrNotExist) {
 		conf, err := os.Create(configurationFile)
@@ -65,5 +69,4 @@ func LoadConfig() {
 	if err != nil {
 		panic(err.Error())
 	}
-
 }
