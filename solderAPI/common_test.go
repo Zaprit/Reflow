@@ -67,7 +67,7 @@ func TestVerifyKey(t *testing.T) {
 	r := mux.NewRouter()
 	r.HandleFunc("/api/verify/{key}", VerifyKey)
 
-	ts := httptest.NewServer(r)
+	ts := httptest.NewServer(loggingMiddleware(r))
 
 	body, err := internal.TestClient(ts.URL + "/api/verify/" + testKey)
 	if err != nil {
