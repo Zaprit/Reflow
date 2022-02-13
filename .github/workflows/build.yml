@@ -13,8 +13,6 @@ jobs:
     container:
       image: ghcr.io/crazy-max/xgo:latest
     steps:
-      - name: Install zip
-        uses: montudor/action-zip@v1
       - name: Build Reflow
         run: |
           xgo -targets "windows/*,darwin/*,linux/arm,linux/arm64,linux/386,linux/amd64" github.com/Zaprit/Reflow
@@ -30,5 +28,5 @@ jobs:
           prerelease: true
           title: "Reflow CI build"
           files: |
-            reflow-*.zip
+            Reflow-*
             - name: action-zip
