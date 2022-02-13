@@ -2,16 +2,13 @@ package solderAPI
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 
+	"github.com/Zaprit/Reflow/config"
 	"github.com/Zaprit/Reflow/database"
 	"github.com/Zaprit/Reflow/models"
 	"github.com/gorilla/mux"
-	"gorm.io/gorm"
-
-	"github.com/Zaprit/Reflow/config"
 )
 
 // APIRoot is the root function that identifies a solder compatible api
@@ -32,17 +29,13 @@ func APIRoot(w http.ResponseWriter, _ *http.Request) {
 func VerifyKey(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 
-	var key models.APIKey
+	key, err := database.GetKey(vars["key"])
 
-	result := database.GetDBInstance().Take(&key, "api_key = ?", vars["key"])
-
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		_, err := w.Write(models.APIErrorJSON("Invalid key provided."))
-
+	if err != nil {
+		_, err = w.Write(models.APIErrorJSON("Invalid key provided."))
 		if err != nil {
-			panic(err.Error())
+			panic(err)
 		}
-
 		return
 	}
 

@@ -6,7 +6,7 @@ import "time"
 type APIKey struct {
 	DBStructTemplate
 	Name   string
-	APIKey string ` gorm:"api_key" `
+	APIKey string ` gorm:"column:api_key" `
 }
 
 // TableName is the tabler interface for GORM to specify a custom name for a table
