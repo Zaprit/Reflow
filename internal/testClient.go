@@ -10,7 +10,7 @@ import (
 
 // TestClient Performs an HTTP GET on the path specified and returns the response or an error
 func TestClient(path string) ([]byte, error) {
-	resp, err := http.Get(path) //nolint:gosec
+	resp, err := http.Get(path)
 	if err != nil {
 		log.Fatalln(err)
 	}
