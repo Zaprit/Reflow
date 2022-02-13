@@ -29,8 +29,11 @@ func GetModpacks(w http.ResponseWriter, _ *http.Request) {
 		out.Modpacks[modpacks[i].Name] = modpacks[i].DisplayName
 	}
 
-	outJSON := utils.Marshal(out)
-	_, err := w.Write(outJSON)
+	outJSON, err := utils.Marshal(out)
+	if err != nil {
+		panic(err.Error())
+	}
+	_, err = w.Write(outJSON)
 
 	if err != nil {
 		fmt.Printf("Error in GetMods: %s", err.Error())
@@ -62,9 +65,12 @@ func GetModpack(w http.ResponseWriter, req *http.Request) {
 		modpack.Builds = append(modpack.Builds, builds[i].Version)
 	}
 
-	out := utils.Marshal(modpack)
+	out, err := utils.Marshal(modpack)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	_, err := w.Write(out)
+	_, err = w.Write(out)
 
 	if err != nil {
 		panic(err.Error())
@@ -74,6 +80,11 @@ func GetModpack(w http.ResponseWriter, req *http.Request) {
 // GetBuild assembles a build struct from the database and returns it as JSON
 func GetBuild(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
+	query := req.URL.Query()
+
+	if query.Get("d") != "" {
+
+	}
 
 	var modpack models.Modpack
 
@@ -120,9 +131,12 @@ func GetBuild(w http.ResponseWriter, req *http.Request) {
 		build.Mods = append(build.Mods, models.ModpackModFormat(&mod, &modversion))
 	}
 
-	out := utils.Marshal(build)
+	out, err := utils.Marshal(build)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	_, err := w.Write(out)
+	_, err = w.Write(out)
 	if err != nil {
 		panic(err.Error())
 	}

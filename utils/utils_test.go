@@ -9,7 +9,7 @@ import (
 	"github.com/Zaprit/Reflow/config"
 )
 
-type teststruct struct {
+type testStruct struct {
 	Id   int
 	Name string
 }
@@ -25,35 +25,35 @@ func (s testStructWithBadJson) MarshalJSON() ([]byte, error) {
 
 func TestMarshal(t *testing.T) {
 
-	data := teststruct{
+	data := testStruct{
 		Id:   1,
 		Name: "Test Data",
 	}
 
-	jsondata := Marshal(&data)
+	jsonData, err := Marshal(&data)
 
-	outdata := teststruct{}
+	outData := testStruct{}
 
-	err := json.Unmarshal(jsondata, &outdata)
-	if err != nil {
+	err2 := json.Unmarshal(jsonData, &outData)
+	if err2 != nil {
 		t.Error(err.Error())
 	}
-	if !reflect.DeepEqual(data, outdata) {
+	if !reflect.DeepEqual(data, outData) {
 		t.Errorf("Structs NOT equal, utils.Marshal does not work")
 	}
 
 	config.Conf.Server.Debug = true
 
-	jsondata2 := Marshal(&data)
+	jsonData2, err := Marshal(&data)
 
-	outdata = teststruct{}
+	outData = testStruct{}
 
-	err = json.Unmarshal(jsondata2, &outdata)
-	if err != nil {
+	err2 = json.Unmarshal(jsonData2, &outData)
+	if err2 != nil {
 		t.Error(err.Error())
 	}
 
-	if !reflect.DeepEqual(data, outdata) {
+	if !reflect.DeepEqual(data, outData) {
 		t.Errorf("Structs NOT equal, utils.Marshal does not work")
 	}
 
@@ -63,8 +63,9 @@ func TestMarshal(t *testing.T) {
 		}
 	}()
 
-	jsondata3 := Marshal(testStructWithBadJson{})
-	if jsondata3 != nil {
-		//		t.Error("was expecting a failure, wtf")
+	jsonData3, err2 := Marshal(testStructWithBadJson{})
+	if err2 == nil {
+		t.Error("was expecting a failure, hmm. Anyway, here's what json.marshal spat out\n", jsonData3)
 	}
+
 }

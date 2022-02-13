@@ -6,7 +6,7 @@ import (
 	"github.com/Zaprit/Reflow/config"
 )
 
-func Marshal(v interface{}) []byte {
+func Marshal(v interface{}) ([]byte, error) {
 
 	var out []byte
 
@@ -17,8 +17,10 @@ func Marshal(v interface{}) []byte {
 	} else {
 		out, err = json.Marshal(v)
 	}
+
 	if err != nil {
-		panic(err.Error())
+		return nil, err
+	} else {
+		return out, nil
 	}
-	return out
 }
