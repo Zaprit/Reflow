@@ -81,7 +81,7 @@ func TestVerifyKey(t *testing.T) {
 		t.Fatal(er2.Error())
 	}
 
-	if key.Name != testKey {
+	if key.Name != testKeyName {
 		t.Fatalf("Key Mismatch, Expected: %v, Received: %v\nIn Data: %s", testKey, key.Name, body)
 	}
 
