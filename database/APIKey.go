@@ -18,3 +18,11 @@ func GetKey(key string) (models.APIKey, error) {
 	}
 	return out, nil
 }
+
+func IsKeyValid(key string) bool {
+	var out models.APIKey
+
+	result := GetDBInstance().Take(&out, "api_key = ?", key)
+
+	return result.RowsAffected > 0
+}

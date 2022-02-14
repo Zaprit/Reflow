@@ -16,17 +16,19 @@ import (
 )
 
 // GetModpacks gets the modpack list from the database and returns it as JSON
-func GetModpacks(w http.ResponseWriter, _ *http.Request) {
+func GetModpacks(w http.ResponseWriter, r *http.Request) {
 	var out models.ModpackList
 
-	var modpacks []models.ListModpack
+	var modpacks []models.Modpack
 
 	out.Modpacks = make(map[string]string)
 
 	database.GetDBInstance().Model(&models.Modpack{}).Find(&modpacks)
 
 	for i := range modpacks {
-		out.Modpacks[modpacks[i].Name] = modpacks[i].DisplayName
+		if !modpacks[i].Private && database.IsKeyValid(mux.Vars(r)["k"]) {
+			out.Modpacks[modpacks[i].Name] = modpacks[i].DisplayName
+		}
 	}
 
 	outJSON, err := utils.Marshal(out)
@@ -82,9 +84,7 @@ func GetBuild(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 	query := req.URL.Query()
 
-	if query.Get("d") != "" {
-
-	}
+	validKey := database.IsKeyValid(query.Get("k"))
 
 	var modpack models.Modpack
 
@@ -102,6 +102,10 @@ func GetBuild(w http.ResponseWriter, req *http.Request) {
 	}
 
 	result2 := database.GetDBInstance().Where("modpack_id = ? and version = ?", modpack.ID, vars["build"]).Take(&build)
+
+	if build.Private && !validKey {
+		return
+	}
 
 	if errors.Is(result2.Error, gorm.ErrRecordNotFound) {
 		_, err := w.Write(models.APIErrorJSON("Build does not exist"))
