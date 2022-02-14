@@ -15,10 +15,6 @@ import (
 )
 
 func TestGetMod(t *testing.T) {
-	database.CreateDBInstance(&database.DBConfig{
-		Driver: "sqlite",
-		DBName: "file::memory:?cache=shared",
-	})
 
 	dbMod := models.Mod{
 		DBStructTemplate: models.DBStructTemplate{CreatedAt: time.Now()},
@@ -72,10 +68,6 @@ func TestGetModVersion(t *testing.T) {
 }
 
 func TestGetMods(t *testing.T) {
-	database.CreateDBInstance(&database.DBConfig{
-		Driver: "sqlite",
-		DBName: "file::memory:?cache=shared",
-	})
 
 	dbMod := models.Mod{
 		DBStructTemplate: models.DBStructTemplate{CreatedAt: time.Now()},

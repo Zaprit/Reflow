@@ -113,3 +113,10 @@ func InitDB() {
 		panic("Failed to migrate tables")
 	}
 }
+
+func CreateTestDBInstance() {
+	CreateDBInstance(&DBConfig{
+		Driver: "sqlite",
+		DBName: "file::memory:?cache=shared",
+	})
+}

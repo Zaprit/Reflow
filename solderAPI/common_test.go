@@ -45,10 +45,7 @@ func TestAPIRoot(t *testing.T) {
 
 // TestMain Bootstraps the tests for solderAPI by creating a database instance and starting a http server
 func TestMain(m *testing.M) {
-	database.CreateDBInstance(&database.DBConfig{
-		Driver: "sqlite",
-		DBName: "file::memory:?cache=shared",
-	})
+	database.CreateTestDBInstance()
 
 	database.InitDB()
 
@@ -59,6 +56,8 @@ func TestMain(m *testing.M) {
 
 // TestVerifyKey Tests the VerifyKey REST endpoint
 func TestVerifyKey(t *testing.T) {
+
+	// Create Test API Key
 	database.GetDBInstance().Create(&models.APIKey{
 		Name:   testKeyName,
 		APIKey: testKey,
