@@ -1,4 +1,4 @@
-package solderAPI
+package solderapi
 
 import (
 	"fmt"

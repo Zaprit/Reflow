@@ -1,4 +1,4 @@
-package solderAPI
+package solderapi
 
 import (
 	"encoding/json"
@@ -43,7 +43,7 @@ func TestAPIRoot(t *testing.T) {
 	}
 }
 
-// TestMain Bootstraps the tests for solderAPI by creating a database instance and starting a http server
+// TestMain Bootstraps the tests for solderapi by creating a database instance and starting a http server
 func TestMain(m *testing.M) {
 	database.CreateTestDBInstance()
 

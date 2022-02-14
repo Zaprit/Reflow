@@ -1,5 +1,5 @@
-// Package solderAPI is the package that defines the solder compatible api
-package solderAPI
+// Package solderapi is the package that defines the solder compatible api
+package solderapi
 
 import (
 	"encoding/json"

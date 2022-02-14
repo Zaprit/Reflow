@@ -6,7 +6,7 @@ import (
 
 	"github.com/Zaprit/Reflow/database"
 
-	"github.com/Zaprit/Reflow/solderAPI"
+	"github.com/Zaprit/Reflow/solderapi"
 
 	"github.com/Zaprit/Reflow/config"
 )
@@ -19,5 +19,5 @@ func main() {
 	database.InitDB()
 
 	fmt.Printf("Starting Reflow server on %s:%d\n", config.Conf.Server.Listen, config.Conf.Server.Port)
-	solderAPI.StartServer(fmt.Sprintf("%s:%d", config.Conf.Server.Listen, config.Conf.Server.Port))
+	solderapi.StartServer(fmt.Sprintf("%s:%d", config.Conf.Server.Listen, config.Conf.Server.Port))
 }
