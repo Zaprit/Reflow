@@ -87,7 +87,6 @@ func GetMod(w http.ResponseWriter, req *http.Request) {
 //  "filesize":462,
 //  "url":"http:\/\/127.0.0.1:8080\/mods\/test-mod\/test-mod-1.0.zip"
 // }
-// the strange escaping on the url is a holdover from solder
 func GetModVersion(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 
