@@ -63,7 +63,46 @@ func TestGetMod(t *testing.T) {
 	}
 }
 
+// TestGetModVersions tests the GetModVersions function
 func TestGetModVersion(t *testing.T) {
+	// Create a new mod and a mod version
+	dbMod := models.Mod{
+		DBStructTemplate: models.DBStructTemplate{CreatedAt: time.Now()},
+		Name:             "test-mod",
+		Description:      "Test Mod Description",
+	}
+	database.GetDBInstance().Create(&dbMod)
+	dbModVersion := models.ModVersion{
+		ModID:    dbMod.ID,
+		Version:  "1.0",
+		MD5:      "notARealMD5hash",
+		Filesize: 12345677,
+		URL:      "https://example.com",
+	}
+	database.GetDBInstance().Create(&dbModVersion)
+
+	// Create a new router
+	r := mux.NewRouter()
+	r.HandleFunc("/api/mod/{slug}/version/{version}", GetModVersion)
+
+	// Create a new test server
+	ts := httptest.NewServer(r)
+
+	// Create a new client
+	resp, err := internal.TestClient(ts.URL + "/api/mod/test-mod/version/1.0")
+	if err != nil {
+		t.Fatal(err.Error())
+	}
+	// Unmarshal the response
+	var modVersion models.ModVersion
+	er2 := json.Unmarshal(resp, &modVersion)
+	if er2 != nil {
+		t.Fatal(er2.Error())
+	}
+
+	if reflect.DeepEqual(&dbModVersion, &modVersion) {
+		t.Fatalf("Mod Version Mismatch, Expected: %v, Received: %v\nIn Data: %s", dbModVersion, modVersion, resp)
+	}
 
 }
 
